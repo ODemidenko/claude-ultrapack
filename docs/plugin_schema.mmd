@@ -1,0 +1,120 @@
+%%{init: {'flowchart': {'curve': 'basis', 'nodeSpacing': 40, 'rankSpacing': 55}}}%%
+flowchart TB
+
+  %% ================ STYLES ================
+  classDef command fill:#fff7ed,stroke:#c2410c,stroke-width:2.5px,color:#000
+  classDef skill fill:#dbeafe,stroke:#1d4ed8,stroke-width:1.5px,color:#000
+  classDef agent fill:#ede9fe,stroke:#6d28d9,stroke-width:2px,color:#000,stroke-dasharray:6 4
+  classDef shard fill:#fce7f3,stroke:#9d174d,stroke-width:1px,color:#000
+
+  %% ================ COMMANDS ================
+  subgraph CMD ["Commands - user entry points (plugins/up/commands/)"]
+    direction LR
+    cmdMake["/up:make<br/><sub>commands/make.md</sub>"]
+    cmdReflect["/up:reflect<br/><sub>commands/reflect.md</sub>"]
+    cmdStepBack["/up:step-back<br/><sub>commands/step-back.md</sub>"]
+    cmdSummary["/up:summary<br/><sub>commands/summary.md</sub>"]
+    cmdTry["/up:try<br/><sub>commands/try.mpd</sub>"]
+  end
+
+  %% ================ MAIN WORKFLOW SKILLS ================
+  subgraph FLOW ["/up:make workflow chain - skills hand-off via Terminal state"]
+    direction TB
+    sDesign["udesign<br/><sub>skills/udesign/SKILL.md</sub>"]
+    sWT["git-worktrees<br/><sub>skills/git-worktrees/SKILL.md</sub>"]
+    sPlan["uplan<br/><sub>skills/uplan/SKILL.md</sub>"]
+    sExec["uexecute<br/><sub>skills/uexecute/SKILL.md</sub>"]
+    sVerify["uverify<br/><sub>skills/uverify/SKILL.md</sub>"]
+    sReview["ureview<br/><sub>skills/ureview/SKILL.md</sub>"]
+    sDoc["udocument<br/><sub>skills/udocument/SKILL.md</sub>"]
+
+    sDesign == approve ==> sPlan
+    sPlan == auto-approve ==> sExec
+    sExec == phases committed ==> sVerify
+    sVerify == pass ==> sReview
+    sVerify -. fail re-execute .-> sExec
+    sExec -. deviation re-plans .-> sPlan
+  end
+
+  %% ================ HELPER SKILLS ================
+  subgraph HELP ["Helper skills - referenced situationally"]
+    direction LR
+    sHandsoff["handsoff<br/><sub>skills/handsoff/SKILL.md</sub>"]
+    sDebug["udebug<br/><sub>skills/udebug/SKILL.md</sub>"]
+    sTDD["test-driven-development<br/><sub>skills/test-driven-development/SKILL.md</sub>"]
+  end
+
+  %% ================ SHARDS ================
+  subgraph SHRD ["Shared shards - non-invocable, included by other skills"]
+    direction LR
+    shBrev["_brevity.md<br/><sub>skills/_brevity.md</sub>"]
+    shPrin["_principles.md<br/><sub>skills/_principles.md - GPC1 to GPC8</sub>"]
+  end
+
+  %% ================ AGENTS ================
+  subgraph AGT ["Agents - dispatched subagents, fresh context (plugins/up/agents/)"]
+    direction LR
+    agImpl["implementer<br/><sub>Opus - agents/implementer.md</sub>"]
+    agImplS["implementer-sonnet<br/><sub>Sonnet - agents/implementer-sonnet.md</sub>"]
+    agExpl["explorer<br/><sub>Haiku - agents/explorer.md</sub>"]
+    agRsrch["researcher<br/><sub>Sonnet - agents/researcher.md</sub>"]
+    agRev["reviewer<br/><sub>Sonnet - agents/reviewer.md</sub>"]
+    agSum["summarizer<br/><sub>Sonnet - agents/summarizer.md</sub>"]
+  end
+
+  %% ============ /up:make ORCHESTRATION (solid arrow = direct invocation) ============
+  cmdMake -- step 5 enter chain --> sDesign
+  cmdMake -- step 6 branch and worktree --> sWT
+  cmdMake -- after done docs refresh --> sDoc
+
+  %% ============ STAND-ALONE COMMANDS (dotted arrow = dispatch / reference) ============
+  cmdSummary -. dispatches .-> agSum
+  sVerify -. verification style .-> cmdTry
+  %% /up:reflect and /up:step-back are intentionally stand-alone
+
+  %% ============ AGENT DISPATCHES ============
+  sExec -. dispatch default .-> agImpl
+  sExec -. dispatch trivial .-> agImplS
+  sExec -. dispatch code map .-> agExpl
+  sExec -. dispatch research .-> agRsrch
+  agImplS -. escalate on NEEDS_CONTEXT .-> agImpl
+  sReview -. dispatch .-> agRev
+
+  %% ============ TDD ============
+  sDesign -. applicability rule .-> sTDD
+  sExec -. if TDD yes .-> sTDD
+  agImpl -. if TDD yes .-> sTDD
+  agImplS -. if TDD yes .-> sTDD
+  sTDD -. records decision in .-> sDesign
+
+  %% ============ DEBUG ============
+  sDebug -. loops back to .-> sVerify
+
+  %% ============ HANDS-OFF CONTRACT ============
+  cmdMake -. if Mode is hands-off .-> sHandsoff
+  sDesign -. hands-off delta .-> sHandsoff
+  sPlan -. hands-off delta .-> sHandsoff
+  sExec -. hands-off delta .-> sHandsoff
+  sVerify -. hands-off delta .-> sHandsoff
+  sReview -. hands-off delta .-> sHandsoff
+  sHandsoff -. safety worktree-first .-> sWT
+  sHandsoff -. unused-cruft caught by .-> agRev
+
+  %% ============ BREVITY SHARD ============
+  sDesign -. include principle 1 .-> shBrev
+  sPlan -. include .-> shBrev
+  sExec -. include .-> shBrev
+  sVerify -. include .-> shBrev
+  sReview -. include .-> shBrev
+  agRev -. bleed-scan .-> shBrev
+
+  %% ============ PRINCIPLES SHARD ============
+  sDesign -. GPC1 to GPC8 .-> shPrin
+  sPlan -. GPC1 to GPC8 .-> shPrin
+  sDebug -. anti-whack-a-mole .-> shPrin
+
+  %% ================ APPLY STYLES ================
+  class cmdMake,cmdReflect,cmdStepBack,cmdSummary,cmdTry command
+  class sDesign,sWT,sPlan,sExec,sVerify,sReview,sDoc,sHandsoff,sDebug,sTDD skill
+  class shBrev,shPrin shard
+  class agImpl,agImplS,agExpl,agRsrch,agRev,agSum agent
