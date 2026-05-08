@@ -4,7 +4,7 @@ description: Orchestrate the full ultrapack workflow — slug, task file, design
 
 # /up:make
 
-Drives a task through the full ultrapack workflow: one task file at `docs/tasks/<slug>.md`, evolving through Design → Plan → Conclusion. Each stage is a separate skill. You orchestrate; the skills do the work.
+Drives a task through the full ultrapack workflow: one task file at `docs/RFCs/<slug>.md`, evolving through Design → Plan → Conclusion. Each stage is a separate skill. You orchestrate; the skills do the work.
 
 ## Arguments
 
@@ -16,11 +16,11 @@ Hands-off activation: if the first whitespace-delimited token of the arguments i
 
 ### 1. Slug
 
-Derive a kebab-case slug from the description, 3 words max (e.g. "flaky-login-test"), and proceed.
+Derive a kebab-case slug from the description, 3 words max (e.g. "flaky-login-test"), and proceed. The slug is kebab-case, as is any file this workflow creates.
 
 ### 2. Resume check
 
-Before creating a new task file, check if `docs/tasks/<slug>.md` already exists.
+Before creating a new task file, check if `docs/RFCs/<slug>.md` already exists.
 
 - Exists: read `**Status:**` from the header. Resume from the next stage:
   - `design` → continue design
@@ -29,11 +29,11 @@ Before creating a new task file, check if `docs/tasks/<slug>.md` already exists.
   - `reviewing` → run `up:ureview`
   - `done` → ask the user what they want to do (start a follow-up, re-open, view conclusion)
 - Doesn't exist: proceed to step 3.
-- Multiple in-flight tasks: if more than one `docs/tasks/*.md` has Status ≠ `done`, list them and ask which one the user means (or whether this is a new task).
+- Multiple in-flight tasks: if more than one `docs/RFCs/*.md` has Status ≠ `done`, list them and ask which one the user means (or whether this is a new task).
 
 ### 3. Create task file
 
-Create `docs/tasks/<slug>.md` from the template. Status = `design`. Branch = `main` (placeholder until step 5). No worktree. Mode = `hands-off` if the keyword was present, else `interactive`.
+Create `docs/RFCs/<slug>.md` from the template. Status = `design`. Branch = `main` (placeholder until step 5). No worktree. Mode = `hands-off` if the keyword was present, else `interactive`.
 
 Template:
 

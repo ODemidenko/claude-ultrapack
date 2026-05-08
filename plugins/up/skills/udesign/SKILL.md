@@ -5,7 +5,7 @@ description: Use before any creative work — features, components, behavior cha
 
 # Design
 
-Turn an idea into a validated spec through collaborative dialogue. Output lives in `docs/tasks/<slug>.md` — `## Design`, `### Invariants` (IV), `### Principles` (PC), `### Assumptions` (AS), `### Unknowns` (UK) — with a TDD decision recorded. Nothing is planned or written until the user approves.
+Turn an idea into a validated spec through collaborative dialogue. Output lives in `docs/RFCs/<slug>.md` — `## Design`, `### Invariants` (IV), `### Principles` (PC), `### Assumptions` (AS), `### Unknowns` (UK) — with a TDD decision recorded. Nothing is planned or written until the user approves.
 
 ## When to invoke
 
@@ -37,9 +37,9 @@ If the ask spans multiple independent subsystems, stop and propose a split. Each
 User: "Add auth, billing, and admin dashboard."
 
 Agent: "That's three independent tasks. I'd split into:
-- `docs/tasks/add-auth.md`
-- `docs/tasks/add-billing.md`
-- `docs/tasks/add-admin-dashboard.md`
+- `docs/RFCs/add-auth.md`
+- `docs/RFCs/add-billing.md`
+- `docs/RFCs/add-admin-dashboard.md`
 
 Each is a separate task file, designed and built in its own session. Which one should we start with?"
 </good-example>

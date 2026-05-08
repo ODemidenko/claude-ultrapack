@@ -5,7 +5,7 @@ description: Use to implement an approved plan. Dispatches `up:implementer` (Opu
 
 # Execute
 
-Implement the approved `## Plan` from `docs/tasks/<slug>.md`. You are the dispatcher — each phase is handed to a fresh implementer subagent (`up:implementer` by default; `up:implementer-sonnet` for trivial phases — see "Choosing the implementer agent" below). After each phase returns, you run the plan-diff check and consistency pass before moving on. The goal is a working change that honors Design and Plan.
+Implement the approved `## Plan` from `docs/RFCs/<slug>.md`. You are the dispatcher — each phase is handed to a fresh implementer subagent (`up:implementer` by default; `up:implementer-sonnet` for trivial phases — see "Choosing the implementer agent" below). After each phase returns, you run the plan-diff check and consistency pass before moving on. The goal is a working change that honors Design and Plan.
 
 ## Before starting
 

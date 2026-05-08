@@ -10,7 +10,7 @@ Ultrapack or `/up:` is an opinionated Claude Code skill pack for developers: pla
 
 Will take you through the process: design → plan → execute → verify → review → update docs.
 
-Each stage populates `docs/tasks/<slug>.md`. The task file is the source of truth — any fresh agent can read it and resume from wherever the last one stopped.
+Each stage populates `docs/RFCs/<slug>.md`. The task file is the source of truth — any fresh agent can read it and resume from wherever the last one stopped.
 
 
 ```
@@ -22,7 +22,7 @@ Same, but ask you as few questions as possible.
 While you are not looking, the agent will pick the safest and most conservative choices: don't delete things (copy and rename instead), work in a git branch, don't introduce silent defaults and fallbacks, fix only critical and important issues. 
 
 Core ideas:
-- One file per task. `docs/tasks/<slug>.md` evolves through Design → Plan → Verify → Conclusion.
+- One file per task. `docs/RFCs/<slug>.md` evolves through Design → Plan → Verify → Conclusion.
 - Invariants-, principles-, and assumptions-first. Discovered in design, obeyed in plan, checked at review. Short IDs (IV, PC, AS, UK, PH, RK, CK) let later sections reference them without re-quoting.
 - Per-phase subagent implementation. Each plan phase dispatched to a fresh `up:implementer`. Plan declares interfaces (`### Interfaces`) and an execution graph (`### Interface graph`); the executor topo-sorts it into waves and dispatches independent phases in parallel.
 - Mandatory manual testing. Agent must run what it built before claiming done.
@@ -45,7 +45,7 @@ Ultrapack is a small set of skills, commands, and agents to help Claude Code han
 
 Inspired by [feature-dev](https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev) and [obra/superpowers](https://github.com/obra/superpowers). [feature-dev](https://github.com/anthropics/claude-code/tree/main/plugins/feature-dev) is too barebones. [obra/superpowers](https://github.com/obra/superpowers) is great, but creates huge plans with a lot of work duplication, changes too frequently and is geared to a specific type of dev work. Also it's a chore to type "superpowers" every time.
 
-Ultrapack is the best of both, shortened and simplified. The whole workflow is built around updating one markdown file per task `docs/tasks/<slug>.md` with sections Design, Plan, Verify, Conclusion. It's also git centered: use worktrees by default for easier parallel work, incremental commits for easier rollback and review.
+Ultrapack is the best of both, shortened and simplified. The whole workflow is built around updating one markdown file per task `docs/RFCs/<slug>.md` with sections Design, Plan, Verify, Conclusion. It's also git centered: use worktrees by default for easier parallel work, incremental commits for easier rollback and review.
 
 Each stage of task planning and execution is a skill. `/up:make` is a helper command that orchestrates the whole flow. 
 

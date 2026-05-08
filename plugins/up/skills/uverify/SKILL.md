@@ -76,7 +76,7 @@ If you can't run the smoke test (e.g. infra unavailable), say so explicitly. Do 
 ## Phase 4 — Write the Verify summary to the task file
 
 <required>
-Append (or replace) the `## Verify` section of `docs/tasks/<slug>.md`. Keep it short — this is not a transcript, it's an audit trail.
+Append (or replace) the `## Verify` section of `docs/RFCs/<slug>.md`. Keep it short — this is not a transcript, it's an audit trail.
 
 Format:
 
