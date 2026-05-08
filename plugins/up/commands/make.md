@@ -10,13 +10,19 @@ Drives a task through the full ultrapack workflow: one task file at `docs/RFCs/<
 
 The user's description of the task follows the command. May be a one-liner ("fix the flaky login test") or a paragraph. Use it as the seed for the slug and the initial framing for `up:udesign`.
 
-Hands-off activation: if the first whitespace-delimited token of the arguments is the literal string `handsoff`, enable hands-off mode. Strip that token before deriving the slug or framing for design. Any other spelling (`hands-off`, `handsOff`, `--handsoff`) is treated as part of the description — only the bare token `handsoff` activates. See `## Hands-off mode` below for behavior.
+Three accepted intake shapes: **text-only** (current behavior — args are pure description), **file-only** (args are a single reference to an existing `.md` file), **file + text** (args contain one file reference plus additional descriptive text in any order).
+
+Parsing rule: whitespace-split the args; strip an optional leading `@` from each token; classify each token as a file reference iff the stripped token resolves to an existing regular `.md` file. The first file token wins and is the input file; remaining tokens (in their original order, with `@` preserved on non-file tokens) form the text portion. If a second file-shaped token also resolves to an existing `.md` file, stop and ask the user which one is the input. If no args are given at all, stop and ask.
+
+Hands-off activation: if the first whitespace-delimited token of the arguments is the literal string `handsoff`, enable hands-off mode. Strip that token before deriving the slug or framing for design. Any other spelling (`hands-off`, `handsOff`, `--handsoff`) is treated as part of the description — only the bare token `handsoff` activates. See `## Hands-off mode` below for behavior. The `handsoff` token is stripped before the file-detection parsing rule runs.
 
 ## Flow
 
 ### 1. Slug
 
-Derive a snake_case slug from the description, 3 words max (e.g. "flaky_login_test"), and proceed. The slug is snake_case, as is any doc file this workflow creates.
+Text-only mode: derive a snake_case slug from the description, 3 words max (e.g. "flaky_login_test"), and proceed. The slug is snake_case, as is any doc file this workflow creates.
+
+File mode (file-only or file + text): the slug equals the input file's basename without its `.md` extension, used verbatim, with no length limit and no word-count cap. The basename (sans extension) must match `^[a-z0-9]+(_[a-z0-9]+)*$`; if it does not, `/up:make` rejects the input with a user-visible message naming the offending basename and stops. No silent normalization. No silent fallback to text-only mode.
 
 ### 2. Resume check
 
@@ -35,6 +41,18 @@ Before creating a new task file, check if `docs/RFCs/<slug>.md` already exists.
 
 Create `docs/RFCs/<slug>.md` from the template. Status = `design`. Branch = `main` (placeholder until step 5). No worktree. Mode = `hands-off` if the keyword was present, else `interactive`.
 
+Seed `## Original description` based on intake shape:
+
+- **Text-only mode:** insert the user's text verbatim.
+- **File-only mode:** insert the input file's body, with every embedded markdown heading demoted by exactly one level (`#`→`##`, `##`→`###`, `###`→`####`, …). This guarantees no H2 appears inside the section.
+- **File + text mode:** insert the user's text as a leading paragraph, then a blank line, then the demoted file body (same demotion rule as file-only mode).
+- **Already-wrapped escape hatch:** if the input file already contains an `## Original description` section, copy that section's body verbatim into the new task file (no demotion, no wrapping) — this prevents double-wrapping when re-running `/up:make` on a file that previously came out of this workflow.
+
+Filesystem effects in file mode:
+
+- If the input file is **outside** `docs/RFCs/`: after the new RFC at `docs/RFCs/<slug>.md` is written, run `git mv <input-path> <input-dir>/wip_<slug>.md` as part of the same `/up:make` invocation. If `<input-dir>/wip_<slug>.md` already exists, refuse and stop with a user-visible message — do not overwrite, do not silently pick another name.
+- If the input file is **inside** `docs/RFCs/`: skip the wrap-and-rename. The Resume check in step 2 owns this case (the file is already a task file, possibly mid-flight).
+
 Template:
 
 ```markdown
@@ -44,6 +62,9 @@ Template:
 **Branch:** main
 **Worktree:** none
 **Mode:** <interactive|hands-off>
+
+## Original description
+<empty — filled by /up:make from input>
 
 ## Design
 <empty — filled by up:udesign>
