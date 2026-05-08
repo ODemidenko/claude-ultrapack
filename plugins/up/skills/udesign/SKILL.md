@@ -37,9 +37,9 @@ If the ask spans multiple independent subsystems, stop and propose a split. Each
 User: "Add auth, billing, and admin dashboard."
 
 Agent: "That's three independent tasks. I'd split into:
-- `docs/RFCs/add-auth.md`
-- `docs/RFCs/add-billing.md`
-- `docs/RFCs/add-admin-dashboard.md`
+- `docs/RFCs/add_auth.md`
+- `docs/RFCs/add_billing.md`
+- `docs/RFCs/add_admin_dashboard.md`
 
 Each is a separate task file, designed and built in its own session. Which one should we start with?"
 </good-example>
