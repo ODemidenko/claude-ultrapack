@@ -1,6 +1,6 @@
 # Free-form File Input to `/up:make`
 
-**Status:** executing
+**Status:** reviewing
 **Branch:** task/free_form_file_input
 **Worktree:** .worktrees/task/free_form_file_input
 **Mode:** interactive
@@ -312,7 +312,37 @@ that PH1 produces.
 - PH2  IF1              ->       @ plugins/up/agents/reviewer.md, plugins/up/skills/udesign/SKILL.md, plugins/up/skills/uplan/SKILL.md, plugins/up/skills/uexecute/SKILL.md, plugins/up/skills/ureview/SKILL.md
 
 ## Verify
-<empty — filled by up:uverify>
+
+**Result:** passed
+
+Positive:
+- CK1 — RFC template now contains `## Original description` immediately before `## Design` (`make.md:65-67`)
+- CK2 — Arguments block names the three intake shapes and the Postel parsing rule (`make.md:13-17`)
+- CK3 — Slug rule for file mode + snake_case regex `^[a-z0-9]+(_[a-z0-9]+)*$` documented (`make.md:25`)
+- CK4 — Step 3 documents content-seeding rules and `git mv` to `wip_<slug>.md` (`make.md:44-55`)
+- CK5 — All five sibling files now mention `## Original description` in their reading list
+- CK6 — udesign PC1 rule (preserve verbatim) at `udesign/SKILL.md:189`
+- CK7 — PC2 sentence at `agents/reviewer.md:28` and `ureview/SKILL.md:26`
+
+Negative:
+- CK8 — PH2 diff is purely additive — `git diff main..HEAD plugins/up/{agents,skills} --shortstat` shows 12 insertions / 4 deletions, the 4 deletions being one-line replacements that retain all original wording
+- CK9 — Branch diff touches only the seven expected files (6 plugin files + task file)
+
+Invariants / assumptions:
+- CK10 (IV1) — slug = file basename verbatim, documented in `make.md:25`
+- CK11 (IV2) — `git mv` to `wip_<slug>.md` in the same `/up:make` invocation, documented in `make.md:53`
+- CK12 (IV3) — `git grep -lF '## Design' plugins/up/ | xargs -r grep -L 'Original description'` → empty
+- CK13 (IV4) — embedded headings demoted by exactly one level in the wrap step (`make.md:46-49`)
+- CK14 (IV5) — non-snake_case basename triggers a user-visible rejection (`make.md:25`)
+- CK15 (IV6) — RFC template carries `## Original description` before `## Design` (`make.md:65-67`)
+- CK16 (AS1) — five-file completeness implied by CK12; any other plugin file reading `## Design` would fail the IV3 grep
+- CK17 (AS2) — unverifiable in this layer; the `@`-strip degrades gracefully if Claude Code ever pre-resolves `@` to inline content
+- CK18 (AS3) — `git mv` history-preservation is standard git behavior; precedent shipped in `slugs_and_rfcs.md`
+
+Interfaces:
+- CK19 (IF1) — `## Original description` section. Producer: `make.md` template + seeding rules. Consumer: five sibling files. End-to-end wiring verified by CK12.
+
+Smoke: this very task file is a self-demonstration — slug `free_form_file_input` equals the input file's basename, `## Original description` is present, the source was renamed to `docs/backlog/wip_free_form_file_input.md`. End-to-end automated smoke requires the user to re-run `/plugin install up@ultrapack` and invoke `/up:make` against a fresh sample file.
 
 ## Conclusion
 <empty — filled by up:ureview>
