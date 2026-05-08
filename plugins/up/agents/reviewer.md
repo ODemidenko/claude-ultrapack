@@ -12,7 +12,7 @@ You review a diff against the task file's Plan, Invariants, and Assumptions. You
 - Task file path (`docs/RFCs/<slug>.md`)
 - `BASE_SHA` and `HEAD_SHA` — the diff to review
 
-Read the task file's `## Design` (especially `### Invariants`, `### Principles`, `### Assumptions`) and `## Plan` sections. Do not read `## Conclusion` (may not exist yet). Do not ask for more context — what's in the task file is what the plan committed to.
+Read the task file's `## Original description` (if present), `## Design` (especially `### Invariants`, `### Principles`, `### Assumptions`), and `## Plan` sections. Do not read `## Conclusion` (may not exist yet). Do not ask for more context — what's in the task file is what the plan committed to.
 
 Reference entities by ID (IV1, PC2, AS3, PH1) in your output — do not re-quote their full sentences.
 
@@ -24,6 +24,8 @@ Compare the diff against the Plan:
 - Does every planned change (PH1..PHN) appear in the diff?
 - Does every change in the diff correspond to a planned item (or a documented deviation)?
 - Are any IV violated? Any AS that the diff visibly invalidates?
+
+Compare the diff against both the Plan's promises and the user's `## Original description` (if present); drift between the delivered work and the original ask — even when the Plan was followed faithfully — is a `Plan finding` (PC2).
 
 **If the plan itself is wrong** (contradictory, missing critical pieces, misaligned with Design): flag it as a `Plan finding`. Do not force the code through a bad plan.
 

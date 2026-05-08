@@ -24,7 +24,7 @@ Follow these steps in order. Do not combine or skip.
 6. Present the design in sections. Get per-section approval.
 7. Identify invariants (IV), principles (PC), assumptions (AS), and unknowns (UK).
 8. Decide TDD — yes or no, with reason. Use `up:test-driven-development`'s applicability rule.
-9. Write to task file — `## Design`, `### Invariants`, `### Principles`, `### Assumptions`, `### Unknowns`.
+9. Write to task file — `## Design`, `### Invariants`, `### Principles`, `### Assumptions`, `### Unknowns`. Read `## Original description` (if present) as input — it carries the user's verbatim ask and grounds the design.
 10. Self-review for placeholders, contradictions, scope, ambiguity. Fix inline.
 11. Wait for user approval before invoking `up:uplan`.
 </required>
@@ -186,6 +186,7 @@ TDD: no (reason: one-off migration script; no reusable logic)
 - Isolation. Units with one clear purpose; interfaces understandable without reading internals.
 - No code yet. Design's output is words, not code.
 - Omit empty subsections. `### Invariants`, `### Principles`, `### Assumptions`, `### Unknowns` are pre-seeded by the `/up:make` template. Delete any that end up with no entries — never leave a placeholder like `<empty>`, "none", or "n/a". See `_brevity.md` principle 1.
+- Preserve `## Original description` verbatim by default (PC1). Edit it only when a design clarification materially supersedes the original phrasing; prefer minimal in-place edits over rewrites; no stylistic or organizational rewrites. The section may be absent (pre-feature RFCs, text-only mode) — tolerate that, never demand it.
 
 ## Hands-off mode
 
