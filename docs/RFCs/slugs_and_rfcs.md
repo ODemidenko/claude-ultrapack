@@ -1,4 +1,4 @@
-# Kebab-case Slugs and `docs/RFCs` Folder Rename
+# Snake-case Slugs and `docs/RFCs` Folder Rename
 
 **Status:** done
 **Branch:** task/slugs-and-rfcs
