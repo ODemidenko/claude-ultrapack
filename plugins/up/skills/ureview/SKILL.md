@@ -43,7 +43,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 ```
 
 Dispatch the `up:reviewer` agent with:
-- Task file path (`docs/tasks/<slug>.md`)
+- Task file path (`docs/RFCs/<slug>.md`)
 - `BASE_SHA` and `HEAD_SHA`
 - Working directory (explicitly — the agent does not inherit `cwd` reliably)
 
@@ -54,7 +54,7 @@ Do **not** pass session history to the reviewer. The reviewer must not see the r
 **Dispatch prompt skeleton** (guidance):
 
 ```
-Task file: <docs/tasks/<slug>.md>
+Task file: <docs/RFCs/<slug>.md>
 BASE_SHA: <merge-base with main, or branch point>
 HEAD_SHA: <current HEAD>
 Working directory: <absolute path>

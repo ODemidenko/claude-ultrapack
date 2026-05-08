@@ -7,7 +7,7 @@ Claude Code plugin for spec-driven, git-centered development. Distributed as a G
 - `.claude-plugin/marketplace.json` — marketplace manifest (lists `up`)
 - `plugins/up/.claude-plugin/plugin.json` — plugin manifest
 - `plugins/up/{skills,commands,agents,hooks}/` — plugin contents
-- `docs/tasks/*.md` — task files (design + plan + conclusion per task)
+- `docs/RFCs/*.md` — task files (design + plan + conclusion per task)
 - `README.md`, `CLAUDE.md` — repo docs
 
 Everything under `plugins/up/` loads into Claude Code. Everything outside (`docs/`, README, CLAUDE.md) is repo-only.
