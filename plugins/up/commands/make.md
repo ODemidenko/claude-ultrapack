@@ -16,7 +16,7 @@ Hands-off activation: if the first whitespace-delimited token of the arguments i
 
 ### 1. Slug
 
-Derive a kebab-case slug from the description, 3 words max (e.g. "flaky-login-test"), and proceed. The slug is kebab-case, as is any file this workflow creates.
+Derive a snake_case slug from the description, 3 words max (e.g. "flaky_login_test"), and proceed. The slug is snake_case, as is any file this workflow creates.
 
 ### 2. Resume check
 
