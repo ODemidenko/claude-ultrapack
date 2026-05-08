@@ -1,5 +1,7 @@
 # ultrapack
 
+> Forked from [btseytlin/ultrapack](https://github.com/btseytlin/ultrapack).
+
 Ultrapack or `/up:` is an opinionated Claude Code skill pack for developers: plan-driven, git-centered, minimalistic. Built around frequently clearing context and using one conversation for one feature. 
 
 ## TL;DR

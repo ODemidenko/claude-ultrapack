@@ -1,10 +1,10 @@
 {
   "name": "up",
   "version": "0.3.7",
-  "description": "ultrapack — lean, opinionated Claude Code skill pack for spec-driven, git-centered development",
+  "description": "ultrapack — lean, opinionated Claude Code skill pack for spec-driven, git-centered development, forked from https://github.com/btseytlin/ultrapack",
   "author": {
-    "name": "Boris Tseitlin",
-    "email": "iambtseytlin@gmail.com"
+    "name": "Oleg Demidenko",
+    "email": "odemidenko@gmail.com"
   },
   "license": "WTFPL",
   "keywords": [
