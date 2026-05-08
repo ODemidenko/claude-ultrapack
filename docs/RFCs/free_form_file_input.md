@@ -1,6 +1,6 @@
 # Free-form File Input to `/up:make`
 
-**Status:** reviewing
+**Status:** done
 **Branch:** task/free_form_file_input
 **Worktree:** .worktrees/task/free_form_file_input
 **Mode:** interactive
@@ -345,4 +345,21 @@ Interfaces:
 Smoke: this very task file is a self-demonstration — slug `free_form_file_input` equals the input file's basename, `## Original description` is present, the source was renamed to `docs/backlog/wip_free_form_file_input.md`. End-to-end automated smoke requires the user to re-run `/plugin install up@ultrapack` and invoke `/up:make` against a fresh sample file.
 
 ## Conclusion
-<empty — filled by up:ureview>
+
+Outcome: `/up:make` now accepts text/file/file+text input and produces RFCs with `## Original description` ahead of `## Design`, threaded through five sibling skills (HEAD `cdaaa19`).
+
+Invariants:
+- IV1 — slug = file basename verbatim (`make.md:25`)
+- IV2 — `git mv` to `wip_<slug>.md` in the same `/up:make` invocation (`make.md:53`)
+- IV3 — `git grep -lF '## Design' plugins/up/ | xargs -r grep -L 'Original description'` → empty
+- IV4 — embedded headings demoted by exactly one level in the wrap step (`make.md:46-49`)
+- IV5 — non-snake_case basename triggers a user-visible rejection (`make.md:25`)
+- IV6 — RFC template carries `## Original description` before `## Design` (`make.md:65-67`)
+
+### Assumptions check
+- AS1 — held: IV3 grep is empty against the originally-identified five sibling files; any other plugin file reading `## Design` would surface.
+- AS2 — held: the `@`-strip parsing rule degrades gracefully if Claude Code ever pre-resolves `@`; observed delivery in this session was the literal `@<path>` string, matching the assumption.
+- AS3 — held: `git mv` history preservation is standard git behavior; precedent shipped in `slugs_and_rfcs.md`.
+
+### Review findings
+- Important: `plugin.json` version unchanged at `0.3.7`. Fixed in `cdaaa19` (bumped to `0.3.8`).
