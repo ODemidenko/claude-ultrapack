@@ -63,7 +63,7 @@ If the subagent reports it couldn't uniquely locate the JSONL (zero matches or m
 After showing the draft, ask:
 
 1. Append to the current task file's `## Conclusion` as a `### Summary — YYYY-MM-DD` subsection (provide the detected `docs/RFCs/<slug>.md` path).
-2. Create a new file at `docs/RFCs/summary-<new-slug>.md` (propose a slug based on the current work).
+2. Create a new file at `docs/tasks/summary_<new_slug>.md` (propose a snake-case slug based on the current work).
 
 Pick the destination based on the user's answer. Do not write anywhere without confirmation.
 </required>
