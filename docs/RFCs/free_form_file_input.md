@@ -1,6 +1,6 @@
 # Free-form File Input to `/up:make`
 
-**Status:** planning
+**Status:** executing
 **Branch:** task/free_form_file_input
 **Worktree:** .worktrees/task/free_form_file_input
 **Mode:** interactive
@@ -200,7 +200,116 @@ install-and-invoke per repo CLAUDE.md design principle).
   file). Standard git behavior; no further verification needed.
 
 ## Plan
-<empty — filled by up:uplan>
+
+Approach: two-phase doc edit. PH1 lands the feature in `/up:make`
+(file detection, slug rule, RFC template, wrap & rename). PH2 sweeps
+five sibling skill/agent files to read `## Original description`
+alongside `## Design`. PH2 consumes the section-name contract IF1
+that PH1 produces.
+
+### PH1 — `/up:make` file-input mode
+
+- **1.1** `plugins/up/commands/make.md:9-13` (modify) — `## Arguments`
+  block. Spell out three accepted intake shapes: text-only (current),
+  file-only, file + text. State the parsing rule in one sentence:
+  whitespace-split the args; strip an optional leading `@`; classify
+  each token as a file reference iff it resolves to an existing
+  regular `.md` file. First file token wins; subsequent file-shaped
+  tokens that also resolve cause `/up:make` to stop and ask. Bare
+  invocation with no args also stops and asks.
+  - Respects: AS2
+- **1.2** `plugins/up/commands/make.md:17-19` (modify) — `### 1. Slug`
+  block. Keep the existing snake_case + 3-words rule for text-only
+  mode. Append: in file mode (with or without text), slug = input
+  file's basename without extension, verbatim, no length limit;
+  basename must match `^[a-z0-9]+(_[a-z0-9]+)*$` or `/up:make`
+  rejects with a user-visible message — no silent normalization, no
+  fallback to text mode.
+  - Respects: IV1, IV5
+- **1.3** `plugins/up/commands/make.md:34-37` (modify) — extend the
+  `### 3. Create task file` preamble to specify content seeding for
+  `## Original description`: text-only mode → user's text verbatim;
+  file-only mode → file body with every embedded markdown heading
+  demoted by exactly one level (`#`→`##`, `##`→`###`, …); file +
+  text mode → text as a leading paragraph, blank line, then the
+  demoted file body. If the input file already contains
+  `## Original description`, copy that section's body verbatim
+  instead of wrapping (no double-wrap).
+  - Respects: IV4, PC1
+- **1.4** `plugins/up/commands/make.md:34-37` (modify, same step) —
+  add filesystem effects: when the input file is outside
+  `docs/RFCs/`, `git mv` it to `<dir>/wip_<slug>.md` as part of the
+  same `/up:make` invocation; refuse if the destination already
+  exists. When the input file is inside `docs/RFCs/`, skip wrap
+  and rename — let the existing Resume check (step 2) take over.
+  - Respects: IV2
+- **1.5** `plugins/up/commands/make.md:38-77` (modify) — RFC
+  template block. Insert
+  `## Original description\n<empty — filled by /up:make from input>`
+  immediately before `## Design`.
+  - Respects: IV6
+- Commit: `make: file-input mode for /up:make (text/file/file+text)`
+
+### PH2 — Sibling-skill awareness sweep
+
+- **2.1** `plugins/up/agents/reviewer.md:15` (modify) — extend the
+  reading-list sentence so the reviewer also reads
+  `## Original description` if present. In `### 1. Plan alignment`
+  (around line 21-28), add one sentence capturing PC2: compare the
+  diff against both the Plan's promises and the user's original ask;
+  drift between them is a Plan finding.
+  - Respects: IV3, PC2
+- **2.2** `plugins/up/skills/udesign/SKILL.md:23-27, 181-188`
+  (modify) — in the `## Process` block (step 9 area), add a bullet:
+  udesign reads `## Original description` if present. In the
+  `## Rules` block (around line 181-188), add one rule capturing
+  PC1: preserve `## Original description` verbatim by default; edit
+  only when a design clarification materially supersedes the
+  original phrasing; prefer minimal in-place edits; no stylistic
+  rewrites.
+  - Respects: IV3, PC1
+- **2.3** `plugins/up/skills/uplan/SKILL.md:42` (modify) — extend
+  the reading list to include `## Original description` if present.
+  - Respects: IV3
+- **2.4** `plugins/up/skills/uexecute/SKILL.md:88-103, 105-114`
+  (modify) — extend the "Pass in the dispatch prompt" required list
+  to include `## Original description` if present in the task file.
+  Update the dispatch prompt skeleton block to include an
+  `Original description` field.
+  - Respects: IV3
+- **2.5** `plugins/up/skills/ureview/SKILL.md:23-33, 45-61`
+  (modify) — in the `<reviewer-role>` block, add one sentence
+  capturing PC2: critical attention to drift between delivered work
+  and the user's original ask. In `### 1. Dispatch up:reviewer`,
+  add `## Original description` (if present) to the dispatch
+  prompt's skeleton and to the agent's reading list.
+  - Respects: IV3, PC2
+- Commit: `skills: read ## Original description alongside ## Design`
+
+### Risks / rollback
+
+- RK1 — Wording drift: a sibling-skill edit might unintentionally
+  alter behavior beyond the additive intent. Mitigation: every PH2
+  edit is strictly additive (no removals, no rephrasings of existing
+  sentences); IV3's grep formula
+  (`git grep -lF '## Design' plugins/up/ | xargs -r grep -L 'Original description'`)
+  verifies coverage at uverify time.
+- Rollback: each phase is a single commit on the task branch;
+  reverting PH2 restores prior sibling-skill behavior without
+  touching `/up:make`; reverting PH1 restores prior `/up:make`
+  without touching siblings. Worktree-isolated.
+
+### Interfaces
+
+- IF1 — `## Original description` task-file section. PH1 mandates it
+  in `/up:make`'s template, parsing, and wrap rules. PH2 instructs
+  five sibling skill/agent files to read it (if present) alongside
+  `## Design`.
+
+### Interface graph
+
+- PH1                   -> IF1   @ plugins/up/commands/make.md
+- PH2  IF1              ->       @ plugins/up/agents/reviewer.md, plugins/up/skills/udesign/SKILL.md, plugins/up/skills/uplan/SKILL.md, plugins/up/skills/uexecute/SKILL.md, plugins/up/skills/ureview/SKILL.md
 
 ## Verify
 <empty — filled by up:uverify>
