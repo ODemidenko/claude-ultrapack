@@ -1,6 +1,6 @@
 # Kebab-case Slugs and `docs/RFCs` Folder Rename
 
-**Status:** executing
+**Status:** done
 **Branch:** task/slugs-and-rfcs
 **Worktree:** .worktrees/task/slugs-and-rfcs
 **Mode:** hands-off
@@ -113,7 +113,23 @@ Invariants / assumptions:
 Notes: end-to-end smoke (install-and-invoke) deferred — see `### Deferred (needs user input)`.
 
 ## Conclusion
-<empty — filled by up:ureview>
+
+Outcome: rename `docs/tasks/` → `docs/RFCs/` complete and kebab-case file rule codified in `/up:make`; HEAD `b8ef76a`.
+
+Invariants:
+- IV1 — `git grep -F 'docs/tasks' -- ':!docs/RFCs/*'` empty across the 12 normative files; scope clarified in `### Deviations from plan`.
+- IV2 — `[ ! -d docs/tasks ]` true; `ls docs/RFCs/*.md | wc -l` = 9.
+- IV3 — kebab rule sentence at `plugins/up/commands/make.md:19` covers both the slug and any file the workflow creates.
+
+### Assumptions check
+- AS1 — held: design-time grep for templated forms empty; PH1.13 final grep empty across normative files.
+- AS2 — held: `git log --follow` on `docs/RFCs/ultrapack-v1.md` shows pre-move `d86bd96`; on `docs/RFCs/interface-first-parallel.md` shows pre-move `1494ea4`.
+- AS3 — pending: requires user to rerun `/plugin install up@ultrapack` post-merge so Claude Code reloads the rebuilt plugin from cache. Tracked under `### Deferred (needs user input)`.
+
+### Unknowns outcome
+- UK1 — resolved: PH2.1 preflight found no uncommitted files under `docs/tasks/` outside the 9 expected.
+
+Verified by: reviewer (`up:reviewer`) returned 0 findings ≥ 80% confidence; all invariants and plan phases confirmed.
 
 ### Deviations from plan
 - IV1 verify gate scope clarification (PH1.13): `git grep -F 'docs/tasks'` is empty across the 12 normative files (skills, commands, agents, `CLAUDE.md`, `README.md`), but 5 hits remain inside `docs/tasks/*.md` task narratives (this file's Design + 2 older tasks legitimately referencing the old path as history). Treating IV1 as satisfied for normative files; historical task-file narrative is out of scope per `_brevity.md` principle 3 (the file is the record). PH2's `git mv` moves these files to `docs/RFCs/` but the in-content references stay; this is correct behavior.
@@ -127,6 +143,7 @@ Notes: end-to-end smoke (install-and-invoke) deferred — see `### Deferred (nee
 - make: branch=`task/slugs-and-rfcs`, worktree=`.worktrees/task/slugs-and-rfcs` — hands-off mandates dedicated branch + worktree (never edit `main` directly). `.worktrees/` already gitignored.
 - make: did not commit user's pre-existing uncommitted edits on main (`marketplace.json`, `CLAUDE.md`, `README.md`, `plugin.json`) — they belong to a separate authorship/install-reminder change made before `/up:make`. Side effect: merging this branch may produce a small conflict on the `docs/tasks` lines in `CLAUDE.md`/`README.md`; resolvable in seconds.
 - uplan: plan auto-approved (hands-off) — two-phase content/rename split; both phases dispatch to `up:implementer-sonnet` (pure mechanical edits and `git mv`).
+- ureview: no fixes applied — reviewer returned 0 findings ≥ 80% confidence; all invariants hold and the recorded IV1 deviation was independently verified as accurate.
 
 ### Deferred (needs user input)
 - End-to-end smoke (install-and-invoke): from this worktree the rebuilt plugin can't be loaded — Claude Code reads `~/.claude/plugins/cache/ultrapack/up/<ver>/`, not the source. After merge, rerun `/plugin install up@ultrapack`, invoke `/up:make` on a throwaway slug, confirm the new task file lands at `docs/RFCs/<slug>.md` (not `docs/tasks/`).
