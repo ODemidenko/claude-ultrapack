@@ -23,6 +23,12 @@ Same, but ask you as few questions as possible.
 
 While you are not looking, the agent will pick the safest and most conservative choices: don't delete things (copy and rename instead), work in a git branch, don't introduce silent defaults and fallbacks, fix only critical and important issues. 
 
+```
+/up:make @docs/backlog/some_draft.md
+```
+
+Same, but seeds the design from a markdown file instead of a typed description. The file's body lands under `## Original description` in the new RFC, preserved verbatim; the original is renamed with a `wip_` prefix so the slug stays unique. You can also mix file + extra text (`/up:make @draft.md and please skip TDD`).
+
 Core ideas:
 - One file per task. `docs/RFCs/<slug>.md` evolves through Design → Plan → Verify → Conclusion.
 - Invariants-, principles-, and assumptions-first. Discovered in design, obeyed in plan, checked at review. Short IDs (IV, PC, AS, UK, PH, RK, CK) let later sections reference them without re-quoting.
