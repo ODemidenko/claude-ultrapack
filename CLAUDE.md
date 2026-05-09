@@ -25,10 +25,13 @@ Internal plugin name: `up`. Slash/skill invocations use the `up:` prefix: `/up:m
 
 Plugin version lives in `plugins/up/.claude-plugin/plugin.json`. Always bump the patch digit (`x.y.Z`) when merging, finalizing, or otherwise landing changes on `main`. Default to patch; ask before bumping minor (`x.Y.z`) or major (`X.y.z`).
 
-## Local development
+## Local plugin update
 
-This repo is consumed as a live local-marketplace install for Claude code. After **any** edit to a file under `plugins/up/`, surface the following reminder to the user verbatim, in the same response that performed the edit:
+This repo is consumed as a live local-marketplace install for Claude code. 
+After **any** edit to a file under `plugins/up/`:
+
+- surface the following reminder to the user verbatim, in the same response that performed the edit:
 
 > REMINDER: each time you edit a file under plugins/up/ in your working repo, you'll need to rerun /plugin install up@ultrapack for Claude Code to copy the new bytes into its cache.
 
-Edits outside `plugins/up/` (e.g. `docs/`, `README.md`, this file) do not require a reinstall — skip the reminder for those.
+Edits outside `plugins/up/` (e.g. `docs/`, `README.md`, this file) do not require the steps above

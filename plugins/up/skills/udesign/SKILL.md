@@ -18,7 +18,7 @@ Follow these steps in order. Do not combine or skip.
 
 1. Explore project context — files, recent commits, existing patterns. No exceptions.
 2. Scope check — split into multiple tasks now if the ask is too large.
-3. Ask clarifying questions (preferably, give options to choose), either one at a time, or by groups pertaining to a single topic (as answer may address a whole group at once then).
+3. Ask clarifying questions, either one at a time or by groups pertaining to a single topic. Where possible, provide options to choose for every question, with a recommended option, based on best practices.
 4. Propose a few reasonable approaches for the task, Each with explicit tradeoffs and unknowns.
 5. Backwards-compat check — flag anything that could break already-running or already-used systems. Ask the user how to resolve before proceeding.
 6. Present the design in sections. Get per-section approval.
