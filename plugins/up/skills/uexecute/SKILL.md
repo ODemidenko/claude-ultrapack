@@ -89,6 +89,7 @@ If `up:implementer-sonnet` returns `NEEDS_CONTEXT` with `escalate: up:implemente
 **Pass in the dispatch prompt:**
 - Full verbatim text of the phase from `## Plan` (e.g. PH3)
 - `### Invariants` (IV), `### Principles` (PC), `### Assumptions` (AS) from `## Design`
+- `## Original description` (if present in the task file) — the user's verbatim ask, so the implementer can spot drift between the phase and the original intent
 - TDD decision (from Design — `yes` or `no (reason)`)
 - Absolute working directory (subagents do not inherit `cwd` reliably across harnesses)
 - Expected git branch (from task file `**Branch:**` header)
@@ -109,6 +110,7 @@ Phase: <verbatim PHN text from ## Plan>
 Invariants: <IV1, IV2, ...>
 Principles: <PC1, PC2, ...>
 Assumptions: <AS1, AS2, ...>
+Original description: <verbatim ## Original description from the task file, if present; omit the field otherwise>
 TDD: <yes | no (reason)>
 Working directory: <absolute path>
 Branch: <expected branch from task file header>

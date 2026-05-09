@@ -23,7 +23,7 @@ Before writing the `## Conclusion`, read `plugins/up/skills/_brevity.md`. Apply 
 ## Two roles, two attitudes
 
 <reviewer-role>
-The `up:reviewer` subagent is **critical**. It is dispatched with a diff, a plan, and invariants — but not the rationale behind the changes. It looks for violated invariants, plan misalignment, bugs, and risks. Confidence-filtered (≥80). Severity-tiered.
+The `up:reviewer` subagent is **critical**. It is dispatched with a diff, a plan, and invariants — but not the rationale behind the changes. It looks for violated invariants, plan misalignment, bugs, and risks. Confidence-filtered (≥80). Severity-tiered. It also pays critical attention to drift between the delivered work and the user's `## Original description` — faithful execution of a Plan that wandered off the original ask is itself a finding (PC2).
 </reviewer-role>
 
 <dispatcher-role>
@@ -47,6 +47,8 @@ Dispatch the `up:reviewer` agent with:
 - `BASE_SHA` and `HEAD_SHA`
 - Working directory (explicitly — the agent does not inherit `cwd` reliably)
 
+The agent reads the task file directly: it must read `## Original description` (if present), `## Design` (with `### Invariants` / `### Principles` / `### Assumptions`), and `## Plan`. Do not pass these inline — the agent has Read access. The path is enough.
+
 <system-reminder>
 Do **not** pass session history to the reviewer. The reviewer must not see the rationale behind changes — only the Plan, Invariants, and diff. Independence is the point.
 </system-reminder>
@@ -58,6 +60,7 @@ Task file: <docs/RFCs/<slug>.md>
 BASE_SHA: <merge-base with main, or branch point>
 HEAD_SHA: <current HEAD>
 Working directory: <absolute path>
+Reading list: ## Original description (if present), ## Design (with ### Invariants / ### Principles / ### Assumptions), ## Plan
 ```
 
 ### 2. Read feedback without reacting

@@ -39,7 +39,7 @@ Before writing the Plan, read `plugins/up/skills/_brevity.md`. Apply its five pr
 ## Process
 
 <required>
-1. Read the task file's `## Design`, `### Invariants` (IV), `### Principles` (PC), `### Assumptions` (AS), `### Unknowns` (UK). Know what you're planning for.
+1. Read the task file's `## Original description` (if present), `## Design`, `### Invariants` (IV), `### Principles` (PC), `### Assumptions` (AS), `### Unknowns` (UK). Know what you're planning for.
 2. Sketch the file structure — which files change, which are new, which classes/methods.
 3. Break into phases. Each phase is a coherent commit.
 4. Write phase-by-phase plan entries. Concrete locations, per-file bullets, interfaces.
