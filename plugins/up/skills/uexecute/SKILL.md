@@ -88,7 +88,7 @@ If `up:implementer-sonnet` returns `NEEDS_CONTEXT` with `escalate: up:implemente
 <required>
 **Pass in the dispatch prompt:**
 - Full verbatim text of the phase from `## Plan` (e.g. PH3)
-- `### Invariants` (IV), `### Principles` (PC), `### Assumptions` (AS) from `## Design`
+- `### Invariants`, `### Principles`, `### Assumptions` from `## Design`, passed in full (name + what + optional why) — not as ID-only lists.
 - `## Original description` (if present in the task file) — the user's verbatim ask, so the implementer can spot drift between the phase and the original intent
 - TDD decision (from Design — `yes` or `no (reason)`)
 - Absolute working directory (subagents do not inherit `cwd` reliably across harnesses)
@@ -107,9 +107,12 @@ If `up:implementer-sonnet` returns `NEEDS_CONTEXT` with `escalate: up:implemente
 
 ```
 Phase: <verbatim PHN text from ## Plan>
-Invariants: <IV1, IV2, ...>
-Principles: <PC1, PC2, ...>
-Assumptions: <AS1, AS2, ...>
+Invariants:
+  - <verbatim ### Invariants bullets, name + what + why>
+Principles:
+  - <verbatim ### Principles bullets>
+Assumptions:
+  - <verbatim ### Assumptions bullets>
 Design: <verbatim ## Original description + Design from the task file>
 TDD: <yes | no (reason)>
 Working directory: <absolute path>
@@ -119,6 +122,8 @@ Owns: <comma-separated paths from the graph's @>           (wave dispatch only)
 Implements: <IF<n>, ...>                                    (wave dispatch only, if this phase produces any)
 Consumes: <IF<n>, ...>                                      (wave dispatch only, if this phase consumes any)
 ```
+
+Implementer recites the full description of any referenced entity in produced code, comments, or docs; the implementer agent's `## Forbidden` section binds this rule.
 
 **When to skip dispatch and do it inline:**
 - Trivial phase (typo, one-line import fix, changelog edit)

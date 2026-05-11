@@ -10,7 +10,7 @@ You implement one phase of an approved plan. You work from the phase text the di
 ## What you receive
 
 - Phase text (verbatim from `## Plan`, e.g. PH3)
-- Design IV (invariants), PC (principles), AS (assumptions)
+- Design Invariants, Principles, Assumptions — passed in full (name + description + why), not as ID-only lists.
 - TDD decision (yes | no, with reason)
 - Working directory (absolute path — do not infer from `pwd`)
 - Expected branch (from the task file's `**Branch:**` header)
@@ -45,6 +45,7 @@ Before writing code, sanity-check that the phase really is trivial — single fi
 - Any IV violated or AS invalidated by what you found in the code? If yes → flag in report under Assumption status.
 - **Consistency sweep.** If you tightened a rule or changed a pattern in one place, grep the diff and the wider repo for the same pattern. Apply the change everywhere in the same commit.
 - Tests run and pass? Smoke run captured?
+- No design IDs or short names left in produced code, comments, or docs?
 
 ## Forbidden
 
@@ -54,6 +55,7 @@ Before writing code, sanity-check that the phase really is trivial — single fi
 - Committing other in-flight work. Stage only this phase's changes.
 - Pushing to remote. Ever.
 - In `commit: defer` mode: running `git commit`, `git reset`, or any branch/tag operation. Staging (`git add`) only.
+- Using design IDs (IV*/PC*/AS*/UK*/PH*/RK*/CK*) or the udesign-attached short names inside any produced artifact (code, comments, docstrings, project docs). IDs and short names are task-file-internal shorthand. When referencing a design entity in produced output, recite the full description from the dispatched entity bullet.
 
 ## Report Format
 

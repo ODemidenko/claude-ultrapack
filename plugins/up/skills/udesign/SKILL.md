@@ -105,8 +105,8 @@ Design owns four entity types:
 - UK1, UK2, … — Unknowns
 
 Rules:
-- Defined once with a full sentence at first appearance; later mentions are ID-only.
-- Max one sentence per definition.
+- Definitions carry a clarity-first descriptive name and a what/why body (see "Task-file output shape" below for the exact form). Later mentions inside the task file may use ID alone, name alone, or both — pick whichever reads cleanly in context.
+- Every entity carries a clarity-first descriptive name in addition to its ID. Names use full English words; only widely-recognized abbreviations (`db`, `api`, `id`, `http`). Length is whatever clarity requires.
 - Numbering is scoped to the task file. The same ID can recur across tasks with different meanings.
 - IDs are for persisted artifacts (task file, commit messages, agent-to-agent prompts). When talking to the user in chat, expand the ID — write out the invariant, principle, or assumption in plain English. "IV3 was violated" is fine in the task file; to the user say "the invariant that Dataset must not import from training/ was violated". Mentioning the ID alongside is OK; replacing the content with just the ID is not.
 
@@ -116,26 +116,26 @@ Plan owns PH (phases) and RK (risks). Verify owns CK (checks). Those are introdu
 
 <invariants>
 IV — specific things that must hold. Concrete enough to check against the code.
-- IV1 — The `Dataset` class must not import from `training/`.
-- IV2 — All DB writes go through the `transaction()` helper.
+- IV1 — dataset-must-not-import-from-training — The `Dataset` class must not import from `training/`. Why: training-side mutations would silently corrupt eval batches.
+- IV2 — all-db-writes-through-transaction-helper — All DB writes go through the `transaction()` helper. Why: ad-hoc writes bypass retry / audit and have caused partial-state bugs before.
 </invariants>
 
 <principles>
 PC — softer abstract guidance. Still concrete enough to audit. Task-specific only — the Global Principles (GPC1–GPC8) in `plugins/up/skills/_principles.md` apply everywhere and don't need to be restated. List a PC only when the task deviates from a GPC (name which one and why) or when it needs an extra rule the GPCs don't cover.
-- PC1 — Fail fast, no silent fallbacks.
-- PC2 — Prefer composition over inheritance.
+- PC1 — fail-fast-no-silent-fallbacks — Fail fast, no silent fallbacks. Why: hidden defaults mask real bugs and leak corrupt state downstream.
+- PC2 — prefer-composition-over-inheritance — Prefer composition over inheritance.
 </principles>
 
 <assumptions>
 AS — unverified premises the design rests on. Conclusion must report whether each held.
-- AS1 — The upstream `users` service returns `email` as UTF-8 in every response.
-- AS2 — Nightly batch volume stays under 10M rows for the next quarter.
+- AS1 — upstream-users-returns-utf8-email — The upstream `users` service returns `email` as UTF-8 in every response.
+- AS2 — nightly-batch-stays-under-10m-rows — Nightly batch volume stays under 10M rows for the next quarter.
 </assumptions>
 
 <unknowns>
 UK — open questions the design cannot answer alone. Resolved during plan, execute, or explicitly deferred. Conclusion must report outcome.
-- UK1 — Whether the existing Redis cluster has spare capacity for this workload.
-- UK2 — Exact failure mode when the upstream API rate-limits mid-batch.
+- UK1 — redis-cluster-spare-capacity — Whether the existing Redis cluster has spare capacity for this workload.
+- UK2 — upstream-api-rate-limit-failure-mode — Exact failure mode when the upstream API rate-limits mid-batch.
 </unknowns>
 
 **Not principles:** "prefer composition" (too vague without "over inheritance"). "Be consistent." "Write clean code."
@@ -162,19 +162,19 @@ TDD: no (reason: one-off migration script; no reusable logic)
 <TDD: yes|no (reason)>
 
 ### Invariants
-- IV1 — <specific thing that must hold>
+- IV1 — <name> — <what: 1-2 sentences>. [Why: <…, max 2 sentences; include when the rationale is non-evident>]
 - IV2 — <...>
 
 ### Principles
-- PC1 — <softer guidance — concrete enough to check>
+- PC1 — <name> — <what: 1-2 sentences>. [Why: <…, max 2 sentences; include when the rationale is non-evident>]
 - PC2 — <...>
 
 ### Assumptions
-- AS1 — <unverified premise the design rests on>
+- AS1 — <name> — <unverified premise the design rests on>
 - AS2 — <...>
 
 ### Unknowns
-- UK1 — <open question left to plan / execute>
+- UK1 — <name> — <open question left to plan / execute>
 - UK2 — <...>
 ```
 
@@ -187,6 +187,7 @@ TDD: no (reason: one-off migration script; no reusable logic)
 - No code yet. Design's output is words, not code.
 - Omit empty subsections. `### Invariants`, `### Principles`, `### Assumptions`, `### Unknowns` are pre-seeded by the `/up:make` template. Delete any that end up with no entries — never leave a placeholder like `<empty>`, "none", or "n/a". See `_brevity.md` principle 1.
 - Preserve `## Original description` verbatim by default (PC1). Edit it only when a design clarification materially supersedes the original phrasing; prefer minimal in-place edits over rewrites; no stylistic or organizational rewrites. 
+- Names are clarity-first: full words, popular abbreviations only, length follows clarity not brevity.
 
 ## Hands-off mode
 

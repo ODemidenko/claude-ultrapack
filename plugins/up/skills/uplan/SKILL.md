@@ -59,7 +59,15 @@ Required always:
 - File structure: for each file, `path/to/file.ext:lineA-lineB` (create|modify) + affected class/method names
 - Per-file bullets: what changes, by name
 - New/changed interfaces: signatures only
-- IV/PC/AS referenced by ID: which Design entities each phase preserves or relies on
+- IV/PC/AS referenced by name + ID: which Design entities each phase preserves or relies on
+
+## Produced-artifacts directive
+
+Every plan `uplan` writes must include, near its `Approach:` line, the following verbatim directive:
+
+> Produced artifacts (code, comments, docs) must refer to design entities by their full description. Design IDs (IV*/PC*/AS*/UK*/PH*/RK*/CK*) and short names are task-file-internal shorthands only. Reason: a stranger reading the codebase later has no RFC context to decode either form.
+
+The directive binds the implementer (its agent file enforces the rule); the planner's job is to surface it on every plan.
 
 ## ID conventions in Plan
 
@@ -68,7 +76,7 @@ Plan introduces two entity types, numbered within the task file:
 - PH1, PH2, … — Phases. Each phase heading is `### PH<N> — <name>`.
 - RK1, RK2, … — Risks. Each is one sentence.
 
-References to Design entities use IDs (IV3, AS1, UK2) — never re-quote the full sentence.
+References to Design entities use the `"name" (ID)` form (e.g. `"dataset must not import from training" (IV1)`). The name carries meaning to a future reader; the ID preserves traceability. Re-quoting the full sentence is still discouraged.
 
 Required when relevant (omit the subsection when it would say "single phase, no deps", "none", or similar):
 - Test strategy: behaviors to cover. If `TDD: yes`, list the failing tests to write first.
@@ -87,11 +95,13 @@ Optional:
 
 Approach: <1-2 sentences>
 
+**Produced-artifacts directive:** Produced artifacts (code, comments, docs) must refer to design entities by their full description. Design IDs (IV*/PC*/AS*/UK*/PH*/RK*/CK*) and short names are task-file-internal shorthands only. Reason: a stranger reading the codebase later has no RFC context to decode either form.
+
 ### PH1 — <name>
 
 - **1.1** `path/to/file.ext:lineA-lineB` (create|modify)
   - `ClassName.method_name(arg: Type) -> Ret` — <what changes, by name>
-  - Respects: IV2, AS1
+  - Respects: "single-tx writes" (IV2), "upstream-email-utf8" (AS1)
 - **1.2** ...
 - Commit: `<message>`
 
@@ -133,7 +143,7 @@ Approach: <1-2 sentences>
 2. Placeholder scan — no "TBD", "handle edge cases", "add validation", "similar to task N", "write tests for the above".
 3. Consistency — method/class names match across bullets; later phases' interfaces reference what earlier phases define.
 4. Leanness — plan size should fit the task. If it exceeds ~1 screen per day of expected work, trim.
-5. IV / AS coverage — each IV and AS has a referencing bullet somewhere (by ID).
+5. IV / AS coverage — each IV and AS has a referencing bullet somewhere (by name + ID).
 6. If `### Interface graph` is present: every phase declares `@ <paths>`; paths declared by phases in the same wave are disjoint; every IF consumed by any phase is defined in `### Interfaces`; every IF defined is produced by exactly one phase.
 </required>
 

@@ -19,6 +19,8 @@ The checklist enumerates every behavior you'll actually run. Built from the Plan
 
 Checks are numbered CK1..CKN within the task file. Each one covers exactly one behavior or guard.
 
+CK lines retain the `(ID)` annotation; the prose may state the entity name for clarity but no extra annotation is required.
+
 - Positive (CK): "POST /items returns 201 for a valid payload." "`Dataset.load()` reads the file and returns the expected schema." Specific inputs → specific expected outputs.
 - Negative (CK): "POST /items returns 400 for missing fields." "`Dataset.load()` raises on a missing file." Things that must still fail correctly.
 - Invariant / assumption (CK): one check per IV that can be mechanically verified, plus any AS the verifier can confirm. Reference the source by ID. "IV1: `Dataset` does not import from `training/`" → a grep that must return nothing.
@@ -37,9 +39,9 @@ Negative:
 - CK4 — Dataset.load("nope.csv") → FileNotFoundError
 
 Invariants / assumptions:
-- CK5 (IV1) — grep "from training" src/dataset/ → empty
-- CK6 (IV2) — all DB writes go through transaction() helper → manual trace
-- CK7 (AS1) — upstream /users response sampled — `email` is UTF-8
+- CK5 (IV1) — "dataset must not import from training" — grep "from training" src/dataset/ → empty
+- CK6 (IV2) — "all DB writes go through transaction() helper" → manual trace
+- CK7 (AS1) — "upstream /users returns UTF-8 email" — sampled response confirms UTF-8
 
 Interfaces:
 - CK8 (IF1) — grep 'Parser.parse' callers → all match (arg: str) -> AST
