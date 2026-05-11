@@ -12,7 +12,7 @@ The user's description of the task follows the command. May be a one-liner ("fix
 
 Three accepted intake shapes: **text-only** (current behavior — args are pure description), **file-only** (args are a single reference to an existing `.md` file), **file + text** (args contain one file reference plus additional descriptive text in any order).
 
-Parsing rule: whitespace-split the args; strip an optional leading `@` from each token; classify each token as a file reference iff the stripped token resolves to an existing regular `.md` file. The first file token wins and is the input file; remaining tokens (in their original order, with `@` preserved on non-file tokens) form the text portion. If a second file-shaped token also resolves to an existing `.md` file, stop and ask the user which one is the input. If no args are given at all, stop and ask.
+Parsing rule: whitespace-split the args; strip an optional leading `@` from each token; classify each token as a file reference if the stripped token resolves to an existing regular `.md` file (if it lacks folder name: glob it, to verify file existence). 
 
 Hands-off activation: if the first whitespace-delimited token of the arguments is the literal string `handsoff`, enable hands-off mode. Strip that token before deriving the slug or framing for design. Any other spelling (`hands-off`, `handsOff`, `--handsoff`) is treated as part of the description — only the bare token `handsoff` activates. See `## Hands-off mode` below for behavior. The `handsoff` token is stripped before the file-detection parsing rule runs.
 
