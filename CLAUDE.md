@@ -21,6 +21,8 @@ Internal plugin name: `up`. Slash/skill invocations use the `up:` prefix: `/up:m
 - **Minimal** — only skills we actually use; no speculative additions
 - **Doc-only** — no runtime code, no unit tests; verification is install-and-invoke
 
+**Note: we require for the skills descriptions to be as crisp as possible.**
+
 ## Versioning
 
 Plugin version lives in `plugins/up/.claude-plugin/plugin.json`. Always bump the patch digit (`x.y.Z`) when merging, finalizing, or otherwise landing changes on `main`. Default to patch; ask before bumping minor (`x.Y.z`) or major (`X.y.z`).
@@ -32,6 +34,6 @@ After **any** edit to a file under `plugins/up/`:
 
 - surface the following reminder to the user verbatim, in the same response that performed the edit:
 
-> REMINDER: each time you edit a file under plugins/up/ in your working repo, you'll need to rerun /plugin install up@ultrapack for Claude Code to copy the new bytes into its cache.
+> REMINDER: each time you edit a file under plugins/up/ in your working repo, you'll need to rerun /reload-plugin (and the marketplace must allow auto-update)
 
 Edits outside `plugins/up/` (e.g. `docs/`, `README.md`, this file) do not require the steps above

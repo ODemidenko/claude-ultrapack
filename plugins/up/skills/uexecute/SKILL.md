@@ -110,7 +110,7 @@ Phase: <verbatim PHN text from ## Plan>
 Invariants: <IV1, IV2, ...>
 Principles: <PC1, PC2, ...>
 Assumptions: <AS1, AS2, ...>
-Original description: <verbatim ## Original description from the task file, if present; omit the field otherwise>
+Design: <verbatim ## Original description + Design from the task file>
 TDD: <yes | no (reason)>
 Working directory: <absolute path>
 Branch: <expected branch from task file header>

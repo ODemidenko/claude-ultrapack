@@ -14,7 +14,7 @@ Applies to anything that outlives the conversation: code, comments, docstrings, 
 
 5. **Soft caps, hard judgment.** No word limits. Lean toward ≤1 screen for a Small task's full task file; ≤3 screens for Medium. Over? Cut.
 
-6. **No orphan text (a.k.a. conversation bleed).** Cut anything that doesn't help the reader understand the artifact now. Usual cause: scaffolding Claude used while writing — framing, rejected alternatives, references to the task or the user's last critique. Scaffolding stays in the chat. Conversation bleed is the visible symptom; orphaning is the rule. Test: does the line earn its place by informing?
+6. **No orphan text (a.k.a. conversation bleed).** Cut anything that doesn't help the reader understand the artifact **now**. Usual cause: scaffolding Claude used while writing — framing, rejected alternatives, references to the task or the user's last critique. Scaffolding stays in the chat. Conversation bleed is the visible symptom; orphaning is the rule. Test: does the line earn its place by informing?
 
    - DONT: `train_vlm_layers: 10  // train 10, NOT all` — "don't train on all" was a chat critique; once the value is 10, the comment is orphaned.
    - DONT: agent description "…Fresh context, never sees session history or later phases. Sonnet 4.6." — session semantics and an inlined model string are orphan; the description should say what the agent *does*.

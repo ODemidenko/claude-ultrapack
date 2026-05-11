@@ -186,7 +186,7 @@ TDD: no (reason: one-off migration script; no reusable logic)
 - Isolation. Units with one clear purpose; interfaces understandable without reading internals.
 - No code yet. Design's output is words, not code.
 - Omit empty subsections. `### Invariants`, `### Principles`, `### Assumptions`, `### Unknowns` are pre-seeded by the `/up:make` template. Delete any that end up with no entries — never leave a placeholder like `<empty>`, "none", or "n/a". See `_brevity.md` principle 1.
-- Preserve `## Original description` verbatim by default (PC1). Edit it only when a design clarification materially supersedes the original phrasing; prefer minimal in-place edits over rewrites; no stylistic or organizational rewrites. The section may be absent (pre-feature RFCs, text-only mode) — tolerate that, never demand it.
+- Preserve `## Original description` verbatim by default (PC1). Edit it only when a design clarification materially supersedes the original phrasing; prefer minimal in-place edits over rewrites; no stylistic or organizational rewrites. 
 
 ## Hands-off mode
 
