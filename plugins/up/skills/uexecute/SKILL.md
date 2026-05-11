@@ -106,14 +106,8 @@ If `up:implementer-sonnet` returns `NEEDS_CONTEXT` with `escalate: up:implemente
 **Dispatch prompt skeleton** (guidance — fill the fields, skip sections that don't apply):
 
 ```
-Phase: <verbatim PHN text from ## Plan>
-Invariants:
-  - <verbatim ### Invariants bullets, name + what + why>
-Principles:
-  - <verbatim ### Principles bullets>
-Assumptions:
-  - <verbatim ### Assumptions bullets>
 Design: <verbatim ## Original description + Design from the task file>
+Phase: <verbatim PHN text from ## Plan>
 TDD: <yes | no (reason)>
 Working directory: <absolute path>
 Branch: <expected branch from task file header>

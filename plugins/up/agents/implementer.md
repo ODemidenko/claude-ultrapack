@@ -9,8 +9,8 @@ You implement one phase of an approved plan. You work from the phase text the di
 
 ## What you receive
 
+- Design (potentially covering multiple-phase change, while your goal is to deliver only a specific phase in the plan)
 - Phase text (verbatim from `## Plan`, e.g. PH3)
-- Design Invariants, Principles, Assumptions — passed in full (name + description + why), not as ID-only lists.
 - TDD decision (yes | no, with reason)
 - Working directory (absolute path — do not infer from `pwd`)
 - Expected branch (from the task file's `**Branch:**` header)
@@ -51,7 +51,7 @@ If anything critical is missing or ambiguous, **stop and ask before writing code
 - Committing other in-flight work. Stage only this phase's changes.
 - Pushing to remote. Ever.
 - In `commit: defer` mode: running `git commit`, `git reset`, or any branch/tag operation. Staging (`git add`) only.
-- Using design IDs (IV*/PC*/AS*/UK*/PH*/RK*/CK*) or the udesign-attached short names inside any produced artifact (code, comments, docstrings, project docs). IDs and short names are task-file-internal shorthand. When referencing a design entity in produced output, recite the full description from the dispatched entity bullet.
+- Using design IDs (IV*/PC*/AS*/UK*/PH*/RK*/CK*) or the design-specific short names inside any produced artifact (code, comments, docstrings, project docs). IDs and short names are task-file-internal shorthand. When referencing a design entity in produced output, recite the full description from the dispatched entity bullet.
 
 ## Report Format
 

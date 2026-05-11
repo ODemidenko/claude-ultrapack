@@ -106,7 +106,6 @@ Design owns four entity types:
 
 Rules:
 - Definitions carry a clarity-first descriptive name and a what/why body (see "Task-file output shape" below for the exact form). Later mentions inside the task file may use ID alone, name alone, or both — pick whichever reads cleanly in context.
-- Every entity carries a clarity-first descriptive name in addition to its ID. Names use full English words; only widely-recognized abbreviations (`db`, `api`, `id`, `http`). Length is whatever clarity requires.
 - Numbering is scoped to the task file. The same ID can recur across tasks with different meanings.
 - IDs are for persisted artifacts (task file, commit messages, agent-to-agent prompts). When talking to the user in chat, expand the ID — write out the invariant, principle, or assumption in plain English. "IV3 was violated" is fine in the task file; to the user say "the invariant that Dataset must not import from training/ was violated". Mentioning the ID alongside is OK; replacing the content with just the ID is not.
 

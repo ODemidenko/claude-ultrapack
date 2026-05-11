@@ -9,8 +9,8 @@ You implement one phase of an approved plan. You work from the phase text the di
 
 ## What you receive
 
+- Design (potentially covering multiple-phase change, while your goal is to deliver only a specific phase in the plan)
 - Phase text (verbatim from `## Plan`, e.g. PH3)
-- Design Invariants, Principles, Assumptions — passed in full (name + description + why), not as ID-only lists.
 - TDD decision (yes | no, with reason)
 - Working directory (absolute path — do not infer from `pwd`)
 - Expected branch (from the task file's `**Branch:**` header)
