@@ -16,7 +16,7 @@ A plan is the minimum information an engineer needs to implement the Design with
 - Interface signatures: new or changed function/method signatures. No bodies.
 - Phases with commits: ordered phases, one commit per phase minimum.
 - Test strategy: the behaviors to cover, not test code.
-- Snippets only where words fail: one regex, one tricky algorithm, one non-obvious API call. Never full implementations.
+- Snippets only where words fail: specific regex, tricky algorithm, non-obvious API call, or describing specific interfaces/classes. Never full implementations.
 
 If an engineer could read your plan and implement the wrong thing, the plan is incomplete. If they need to re-derive the Design to understand the plan, the plan is bloated.
 
