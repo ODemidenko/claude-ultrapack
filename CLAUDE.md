@@ -12,6 +12,9 @@ Claude Code plugin for spec-driven, git-centered development. Distributed as a G
 
 Everything under `plugins/up/` loads into Claude Code. Everything outside (`docs/`, README, CLAUDE.md) is repo-only.
 
+Internal plugin structure and skills+agents inter-dependencies is described in the file: docs/plugin_schema.md.
+Upon any major project update (resulting in how skills interact), after `uexecute` finishes: propose updating this file.
+
 ## Naming
 
 Internal plugin name: `up`. Slash/skill invocations use the `up:` prefix: `/up:make`, `up:udesign`, `up:reviewer`. Process skills are `u`-prefixed (`udesign`, `uplan`, `uexecute`, `uverify`, `ureview`, `udebug`, `udocument`) to dodge collisions with Claude Code built-ins.

@@ -55,19 +55,19 @@ Before writing the Plan, read `plugins/up/skills/_brevity.md`. Apply its five pr
 ## Required contents
 
 Required always:
-- Approach: 1-2 sentences on the strategy and why it fits the Design
-- File structure: for each file, `path/to/file.ext:lineA-lineB` (create|modify) + affected class/method names
+- Approach: A shortest reasonable description on the strategy and why it fits the Design
+- File structure: for each file, `path/to/file.ext:lineA-lineB` (create|modify) + affected class/method names (mandatory)
 - Per-file bullets: what changes, by name
 - New/changed interfaces: signatures only
 - IV/PC/AS referenced by name + ID: which Design entities each phase preserves or relies on
 
-## Produced-artifacts directive
+## Additional notes for the implementer
 
-Every plan `uplan` writes must include, near its `Approach:` line, the following verbatim directive:
+Every plan `uplan` writes must include, near its bottom `Notes` section, the following verbatim directives:
 
 > Produced artifacts (code, comments, docs) must refer to design entities by their full description. Design IDs (IV*/PC*/AS*/UK*/PH*/RK*/CK*) and short names are task-file-internal shorthands only. Reason: a stranger reading the codebase later has no RFC context to decode either form.
 
-The directive binds the implementer (its agent file enforces the rule); the planner's job is to surface it on every plan.
+> Line numbers are subject to change, use the symbolic names (class, function names) as the ultimate source of truth. Raise error if symbolic references got outdated.
 
 ## ID conventions in Plan
 
@@ -76,7 +76,7 @@ Plan introduces two entity types, numbered within the task file:
 - PH1, PH2, … — Phases. Each phase heading is `### PH<N> — <name>`.
 - RK1, RK2, … — Risks. Each is one sentence.
 
-References to Design entities use the `"name" (ID)` form (e.g. `"dataset must not import from training" (IV1)`). The name carries meaning to a future reader; the ID preserves traceability. Re-quoting the full sentence is still discouraged.
+References to Design entities use the `"name" (ID)` form (e.g. `"dataset must not import from training" (IV1)`). The name carries meaning to a future reader; the ID preserves traceability. 
 
 Required when relevant (omit the subsection when it would say "single phase, no deps", "none", or similar):
 - Test strategy: behaviors to cover. If `TDD: yes`, list the failing tests to write first.
@@ -93,9 +93,8 @@ Optional:
 ```markdown
 ## Plan
 
-Approach: <1-2 sentences>
+Approach: <general description>
 
-**Produced-artifacts directive:** Produced artifacts (code, comments, docs) must refer to design entities by their full description. Design IDs (IV*/PC*/AS*/UK*/PH*/RK*/CK*) and short names are task-file-internal shorthands only. Reason: a stranger reading the codebase later has no RFC context to decode either form.
 
 ### PH1 — <name>
 
@@ -126,6 +125,9 @@ Approach: <1-2 sentences>
 - PH1              -> IF1, IF2   @ plugins/up/skills/foo/SKILL.md
 - PH2  IF1         -> IF3        @ plugins/up/skills/bar/SKILL.md
 - PH3  IF2, IF3 ->               @ plugins/up/agents/baz/AGENT.md
+
+### Notes:
+<>
 ```
 
 ## When to declare interfaces
