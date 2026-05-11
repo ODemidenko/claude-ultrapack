@@ -21,12 +21,13 @@ Follow these steps in order. Do not combine or skip.
 3. Ask clarifying questions, either one at a time or by groups pertaining to a single topic. Where possible, provide options to choose for every question, with a recommended option, based on best practices.
 4. Propose a few reasonable approaches for the task, Each with explicit tradeoffs and unknowns.
 5. Backwards-compat check — flag anything that could break already-running or already-used systems. Ask the user how to resolve before proceeding.
-6. Present the design in sections. Get per-section approval.
-7. Identify invariants (IV), principles (PC), assumptions (AS), and unknowns (UK).
-8. Decide TDD — yes or no, with reason. Use `up:test-driven-development`'s applicability rule.
-9. Write to task file — `## Design`, `### Invariants`, `### Principles`, `### Assumptions`, `### Unknowns`. Read `## Original description` (if present) as input — it carries the user's verbatim ask and grounds the design.
-10. Self-review for placeholders, contradictions, scope, ambiguity. Fix inline.
-11. Wait for user approval before invoking `up:uplan`.
+6. Identify invariants (IV), principles (PC), assumptions (AS), and unknowns (UK).
+7. Decide TDD — yes or no, with reason. Use `up:test-driven-development`'s applicability rule.
+8. Self-review for placeholders, contradictions, scope, ambiguity. Fix inline.
+9. Write the full Design to the task file — `## Design`, `### Invariants`, `### Principles`, `### Assumptions`, `### Unknowns`. Writing precedes review so the user can read it in their editor of choice.
+10. Ask the user to review the written file. Point at the path (`docs/RFCs/<slug>.md`) and request: approve, request changes, or reject. On change requests: edit the file in place and re-prompt at the same path. Do not paste the full Design back into chat — the file is the source of truth.
+11. After approval, propose committing the RFC. Print `Commit RFC with Design? [Y/n]`. On `y`/empty: stage `docs/RFCs/<slug>.md` plus any pre-staged rename of the seeding backlog file (the `git mv` that `/up:make` performed in file mode), and commit with `docs(rfc): design — <slug>`. On `n`: continue without committing. No branch creation at this stage.
+12. Invoke `up:uplan`.
 </required>
 
 ## Scope check — split before planning
@@ -190,8 +191,8 @@ TDD: no (reason: one-off migration script; no reusable logic)
 
 ## Hands-off mode
 
-See `up:handsoff` for the full contract. Stage-specific delta: Design is still the one interactive stage — run the full process. The only relaxation is "one question per message" → "ask only when genuinely blocking; prefer a conservative default". Log each defaulted answer as `- udesign: <what> — <rationale>` in `### Hands-off decisions`; log no-default gaps under `### Deferred (needs user input)`.
+See `up:handsoff` for the full contract. Stage-specific delta: Design is still the one interactive stage — run the full process. The only relaxation is "one question per message" → "ask only when genuinely blocking; prefer a conservative default". Log each defaulted answer as `- udesign: <what> — <rationale>` in `### Hands-off decisions`; log no-default gaps under `### Deferred (needs user input)`. Hands-off also defaults the end-of-stage commit prompt to `yes`; log `- udesign: RFC auto-committed (hands-off)` under `### Hands-off decisions` and proceed.
 
 ## Terminal state
 
-User has approved the Design section (interactive) or the Design has been written and self-reviewed (hands-off) → invoke `up:uplan`. Do not write code. Do not invoke any other skill.
+Design has been written to `docs/RFCs/<slug>.md`, the user has approved it (interactive) or it has been auto-approved (hands-off), and the end-of-stage commit prompt has been answered (commit landed or user declined). Status → `planning`. Invoke `up:uplan`. Do not write code. Do not invoke any other skill.

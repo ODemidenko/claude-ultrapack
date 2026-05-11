@@ -10,10 +10,11 @@ Implement the approved `## Plan` from `docs/RFCs/<slug>.md`. You are the dispatc
 ## Before starting
 
 <required>
-1. Read the full task file — Design, Invariants (IV), Principles (PC), Assumptions (AS), Unknowns (UK), Plan. Plan is not optional reading.
-2. Scan the plan for ambiguity, missing dependencies, or contradictory steps. Raise now, not after writing half the code.
-3. Verify branch + worktree. Check `git rev-parse --show-toplevel` and `git branch --show-current` match the task file's `**Branch:**` and `**Worktree:**` headers. If mismatched: stop and ask.
+1. Read the full task file. You must work according to the plan provided.
+2. **Worktree / branch decision.** Read the task file's `**Branch:**` header. If it is `main` or `master` and the task is not trivial: stop, prompt the user `Create a dedicated branch + worktree for this task? [Y/n]`. On `y`/empty: invoke `up:git-worktrees`, update the task file's `**Branch:**` and `**Worktree:**` headers, and continue inside the new worktree. On `n`: continue on the current branch and record `- uexecute: user declined worktree, executing on <branch>` under `### Conclusion → ### Deviations from plan` (create the subsection if missing). Hands-off mode: skip the prompt and always create a branch + worktree; the only escape is when `up:git-worktrees` itself fails, in which case log under `### Deferred (needs user input)` and stop. Trivial tasks may stay on the current branch without a prompt.
+3. **Verify working state.** Run independently of whether step 2 created anything: confirm `git rev-parse --show-toplevel` matches the task file's `**Worktree:**` header (or the main repo root when `**Worktree:** none`) and `git branch --show-current` matches `**Branch:**`. Covers the case where step 2 was skipped because the headers already point at a task-specific branch from a previous session. On mismatch: stop and ask.
 4. Build the checklist — one todo per plan phase (or per task if phases are coarse). Use TodoWrite.
+5. **Single-phase detection.** Count `### PH<N>` headings in `## Plan`. If exactly one and no `### Interface graph` section is present, mark the run as **solo-phase**: dispatch with `Commit mode: defer` and follow the solo-phase review protocol in "Dispatch per phase" below.
 </required>
 
 ## Brevity
@@ -93,7 +94,7 @@ If `up:implementer-sonnet` returns `NEEDS_CONTEXT` with `escalate: up:implemente
 - TDD decision (from Design — `yes` or `no (reason)`)
 - Absolute working directory (subagents do not inherit `cwd` reliably across harnesses)
 - Expected git branch (from task file `**Branch:**` header)
-- `Commit mode: self | defer` — `self` for solo-phase or serial-fallback dispatch; `defer` when the phase is in a multi-phase wave per `### Interface graph`
+- `Commit mode: self | defer` — `defer` when the phase is in a multi-phase wave per `### Interface graph`, OR when the run is **solo-phase** in interactive mode (single `### PH<N>` and no graph). Otherwise `self`. In hands-off mode, solo-phase still uses `self` — there is no user to review staged changes.
 - `Owns`, `Implements`, `Consumes` — only when the plan has `### Interface graph`; see "Wave dispatch" below for how they're sourced and passed
 
 **Do not pass:**
@@ -123,6 +124,26 @@ Implementer recites the full description of any referenced entity in produced co
 - Trivial phase (typo, one-line import fix, changelog edit)
 - Phase needs mid-work interactive user input
 - A phase-N-and-N+1 fix follows from review findings, small enough to just edit
+
+## Solo-phase review protocol
+
+Used when the plan has exactly one `### PH<N>` heading, no `### Interface graph`, and the task-file `**Mode:**` is `interactive`.
+
+<required>
+1. Dispatch the single implementer with `Commit mode: defer`. The implementer stages files, runs tests, and reports the intended commit message — but does not commit.
+2. On the implementer's `DONE` return, print a short summary to the user:
+   - `git diff --stat --staged` output
+   - The implementer's proposed commit message
+   - The implementer's `Implemented:` and `Tests:` / `Smoke:` lines verbatim
+3. Ask: `Now, you can review the staged changes. Proposed commit message: <...>. Do you approve to commit? [y/n/other]`.
+   - `y`  → check every touched file was staged (user may have changed smth: check that no file appears in both staged and changed, not staged sets). Run `git commit -m "<proposed message>"`, then proceed to the plan-diff check, consistency pass, and `up:uverify` as in the normal flow.
+   - `n` → do not commit. Log `- uexecute: user declined commit of staged solo-phase changes` under `### Conclusion → ### Deferred (needs user input)` (create the subsection if missing), with the proposed message and staged file list. Stop. Do not invoke `up:uverify`.
+   - `other` -> allow user free-text answer.
+4. On `DONE_WITH_CONCERNS`: print the concerns alongside the diff summary; otherwise behave as `DONE`.
+5. On `BLOCKED` / `NEEDS_CONTEXT`: handle as in the normal serial-fallback loop — re-dispatch with corrected context or escalate to `up:uplan`.
+</required>
+
+Hands-off mode: skip this protocol entirely. Solo-phase dispatches use `Commit mode: self` and follow the normal serial-fallback loop. Log `- uexecute: solo-phase auto-committed (hands-off)` under `### Hands-off decisions`.
 
 ## Wave dispatch
 
@@ -313,6 +334,8 @@ Don't force through. Ask. This list applies in both interactive and hands-off mo
 See `up:handsoff` for the full contract, including the safety principles (worktree-first, no destructive git ops, no push to remote, additive-over-subtractive edits). Stage-specific delta: execute's own behavior is unchanged — the existing fail-fast rules and "when to stop and ask" list above *are* the hands-off handling. Each such stop is logged under `### Deferred (needs user input)` with enough context for the user to resume.
 
 Never invent a default to keep moving. Conservative = fewer assumptions = stop and log.
+
+Solo-phase behavior in hands-off is **not** deferred — the implementer is dispatched with `Commit mode: self` because there is no user to review the staged changes.
 
 ## Never
 

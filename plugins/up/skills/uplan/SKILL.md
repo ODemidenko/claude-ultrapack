@@ -49,7 +49,8 @@ Before writing the Plan, read `plugins/up/skills/_brevity.md`. Apply its five pr
 8. Backwards-compat check — restate Design's compat risks in concrete plan terms.
 9. Self-review inline (placeholders, consistency, invariants, spec coverage).
 10. Scope-creep / simpler-way check — see below. This is the final step before handoff.
-11. Present the plan to the user. In interactive mode, wait for approval, then invoke `up:uexecute`. In hands-off mode (task-file `**Mode:** hands-off`), auto-invoke `up:uexecute` after presenting, and log `- uplan: plan auto-approved (hands-off)` to `## Conclusion → ### Hands-off decisions`.
+11. Write the full Plan to `docs/RFCs/<slug>.md` (Plan-before-review). Then ask the user to review the written file at that path — approve, request changes, or reject. On change requests, edit in place and re-prompt at the same path.
+12. After approval, propose committing the RFC. Print `Commit RFC with Plan? [Y/n]`. On `y`/empty: stage `docs/RFCs/<slug>.md` and commit with `docs(rfc): plan — <slug>`. On `n`: continue without committing. In hands-off mode (task-file `**Mode:** hands-off`), default to `yes` and log `- uplan: RFC auto-committed (hands-off)` under `### Hands-off decisions`. Then invoke `up:uexecute`. In hands-off mode, also log `- uplan: plan auto-approved (hands-off)` as today.
 </required>
 
 ## Required contents
@@ -195,8 +196,8 @@ If this check surfaces real simplifications, rewrite the plan. Don't stack warni
 
 ## Hands-off mode
 
-See `up:handsoff` for the full contract. Stage-specific delta: skip the approval wait — present the plan highlights, log `- uplan: plan auto-approved` to `### Hands-off decisions`, invoke `up:uexecute` directly. Self-review, scope-creep check, and backwards-compat restatement are unchanged. Ambiguities that would require a user call go to `### Deferred (needs user input)` and the plan stops — do not guess around them.
+See `up:handsoff` for the full contract. Stage-specific delta: skip the approval wait — write the plan to the task file, default the end-of-stage commit prompt to `yes` (logged as `- uplan: RFC auto-committed (hands-off)`), then invoke `up:uexecute` directly. Self-review, scope-creep check, and backwards-compat restatement are unchanged. Ambiguities that would require a user call go to `### Deferred (needs user input)` and the plan stops — do not guess around them.
 
 ## Terminal state
 
-Plan written, self-reviewed, scope-checked. Interactive: present highlights, wait for approval, invoke `up:uexecute`. Hands-off: present highlights, log auto-approval, invoke `up:uexecute`.
+Plan written to `docs/RFCs/<slug>.md`, self-reviewed, scope-checked. Interactive: user has approved at the file path, end-of-stage commit prompt answered, then `up:uexecute` invoked. Hands-off: plan auto-approved and auto-committed (both logged), then `up:uexecute` invoked.

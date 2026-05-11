@@ -39,7 +39,7 @@ Before creating a new task file, check if `docs/RFCs/<slug>.md` already exists.
 
 ### 3. Create task file
 
-Create `docs/RFCs/<slug>.md` from the template. Status = `design`. Branch = `main` (placeholder until step 5). No worktree. Mode = `hands-off` if the keyword was present, else `interactive`.
+Create `docs/RFCs/<slug>.md` from the template. Status = `design`. Branch = `main` (placeholder; set later by `up:uexecute` when it creates a branch + worktree). No worktree. Mode = `hands-off` if the keyword was present, else `interactive`.
 
 Seed `## Original description` based on intake shape:
 
@@ -113,40 +113,27 @@ Hands-off mode: do not confirm. Default to Medium (full flow) unless the scope i
 
 Invoke `up:udesign`. It populates `## Design`, `### Invariants` (IV), `### Principles` (PC), `### Assumptions` (AS), `### Unknowns` (UK), and records `TDD: yes / no (reason)`. Status → `planning`.
 
-### 6. Branch & worktree decision
+### 6. Plan stage (unless skipped)
 
-After Design (or immediately for trivial/small tasks), decide:
+Invoke `up:uplan`. It populates `## Plan`. After plan approval (and the end-of-stage commit prompt the skill now owns), Status → `executing`.
 
-- Complex / long-running / touches many files → suggest a dedicated branch + worktree. Use `up:git-worktrees`.
-- Easy fix / small scope → suggest working on current branch (usually `main`).
+Worktree and branch creation is no longer decided here. `up:uexecute` owns that step — it prompts at the start of execution (interactive) or auto-creates a worktree (hands-off). See `up:uexecute → ## Before starting` step 2.
 
-Interactive mode: always confirm with the user.
-
-Hands-off mode: default to the safest reversible option — always a dedicated branch + worktree via `up:git-worktrees`, never direct edits to `main`/`master`. Log the branch name and worktree path under `## Conclusion → ### Hands-off decisions`. The only exception: if `up:git-worktrees` itself fails (e.g. no gitignored worktree path available), log the failure under `### Deferred (needs user input)` and stop — do not silently fall back to working on `main`.
-
-If a branch is created, update the task file's `**Branch:**` and `**Worktree:**` headers.
-
-### 7. Plan stage (unless skipped)
-
-Invoke `up:uplan`. It populates `## Plan`. Status → `executing`.
-
-In hands-off, `up:uplan` auto-proceeds to `up:uexecute` without an approval prompt. It logs `- uplan: plan auto-approved (hands-off)` to `### Hands-off decisions`.
-
-### 8. Execute stage
+### 7. Execute stage
 
 Invoke `up:uexecute`. Implements the plan, commits incrementally.
 
-### 9. Verify loop
+### 8. Verify loop
 
 Invoke `up:uverify`. On failure: `up:uverify` describes how each failure *should* have worked, control returns to `up:uexecute`. Loop until verify passes.
 
-### 10. Review stage
+### 9. Review stage
 
 Status → `reviewing`. Invoke `up:ureview`. It dispatches `up:ureviewer`, processes findings, fills `## Conclusion`. Status → `done`.
 
 Once the task is concluded as `done`, run the docs-refresh check (see below).
 
-### 11. Finish
+### 10. Finish
 
 Hands-off mode — first: print the `## Conclusion → ### Hands-off decisions` list (and `### Deferred (needs user input)` if non-empty) to the user and ask verbatim: "Here's what I did to make it hands-off. Want to change anything?" Wait for the user's response before continuing.
 
@@ -189,8 +176,7 @@ Stop and ask the user when:
 ## Rules
 
 - Never skip Review (both modes)
-- Never auto-merge or auto-push — the user chooses at step 11 (both modes)
-- Never create a worktree without confirming in interactive mode
+- Never auto-merge or auto-push — the user chooses at step 10 (both modes)
 - Never edit `main` / `master` directly in hands-off (see `up:handsoff` safety principles)
 - Keep the task file as the single source of truth — each stage reads it, each stage writes to it
 - External spec / design docs (e.g. anything under `docs/specs/`) are read-only during execute. If a stage finds the spec is wrong, surface it to the user — don't mutate it silently
@@ -199,7 +185,7 @@ Stop and ask the user when:
 
 ## Hands-off mode
 
-Activated by prefixing `/up:make` arguments with the literal token `handsoff`. The full contract — safety principles (worktree-first, reversible-first, no destructive ops, no push), decision log format, deferred log, no-default rule, end-of-task summary — lives in `up:handsoff`. Read that skill once when the task file's `**Mode:**` header is `hands-off`; the references in step 4, step 6, step 7, step 11 above are the stage-specific touches on top of it.
+Activated by prefixing `/up:make` arguments with the literal token `handsoff`. The full contract — safety principles (worktree-first, reversible-first, no destructive ops, no push), decision log format, deferred log, no-default rule, end-of-task summary — lives in `up:handsoff`. Read that skill once when the task file's `**Mode:**` header is `hands-off`.
 
 ## Terminal state
 

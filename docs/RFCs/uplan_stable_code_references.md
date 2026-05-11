@@ -343,6 +343,11 @@ The phases each map one-to-one to a Design change; no "while I'm here" refactors
 ## Conclusion
 <empty — filled by up:ureview>
 
+### Deviations from plan
+
+- PH3.1 dropped the existing `## Before starting` step "Scan the plan for ambiguity, missing dependencies, or contradictory steps." The plan instructed a verbatim full-list replacement and the replacement list omits that item. Applied as the plan dictated, flagged because the narrative ("worktree-at-start step, single-phase detection") did not surface this subtraction.
+- PH3.4 inserted the phrase "UK1 in the originating task" into `plugins/up/skills/uexecute/SKILL.md`. This conflicts with the plan's own Produced-artifacts directive ("Design IDs … are task-file-internal shorthands only"). Applied verbatim per the user override that the plan's wording is a near-final draft.
+
 ### Hands-off decisions
 <empty — populated only when Mode is hands-off>
 
