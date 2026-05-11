@@ -21,7 +21,8 @@ Internal plugin name: `up`. Slash/skill invocations use the `up:` prefix: `/up:m
 - **Minimal** — only skills we actually use; no speculative additions
 - **Doc-only** — no runtime code, no unit tests; verification is install-and-invoke
 
-**Note: we require for the skills descriptions to be as crisp as possible.**
+**Note: we require for the skills descriptions to be as crisp as possible.** When making any change to the skills - validate if it is not duplicating instructions in the neighbor skills. Skills must follow DRY principle, and required behavior should be usually define only in a single place, where it suits most. Plan for this best placement rigorously, and consult with the user.
+Duplicating instructions across multiple associated skills/agents - is the biggest source of bloat and potential inconsistencies (when later, such a duplicated instruction gets updated only in a single place).
 
 ## Versioning
 
