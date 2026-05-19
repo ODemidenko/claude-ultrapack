@@ -2,7 +2,7 @@
 
 Visual map of every `.md` file under `plugins/up/` and how they reference each other. Use this when chasing where a `_brevity.md` rule, an invariant ID, or a hand-off between skills actually lives.
 
-The diagram covers all **24** loadable artifacts: 5 commands, 11 skills, 2 shared shards, 6 agents.
+The diagram covers all **25** loadable artifacts: 5 commands, 12 skills, 2 shared shards, 6 agents.
 
 ## Diagram
 
@@ -57,6 +57,7 @@ flowchart TB
   subgraph STAND ["Standalone - invoked directly, never from /up:make (no edges by design)"]
     direction LR
     sBrainstorm["ubrainstorm<br/><sub>skills/ubrainstorm/SKILL.md</sub>"]
+    sPlanFree["uplan-freeform<br/><sub>skills/uplan-freeform/SKILL.md</sub>"]
   end
 
   %% ================ SHARDS ================
@@ -130,7 +131,7 @@ flowchart TB
 
   %% ================ APPLY STYLES ================
   class cmdMake,cmdReflect,cmdStepBack,cmdSummary,cmdTry command
-  class sDesign,sWT,sPlan,sExec,sVerify,sReview,sDoc,sHandsoff,sDebug,sTDD,sBrainstorm skill
+  class sDesign,sWT,sPlan,sExec,sVerify,sReview,sDoc,sHandsoff,sDebug,sTDD,sBrainstorm,sPlanFree skill
   class shBrev,shPrin shard
   class agImpl,agImplS,agExpl,agRsrch,agRev,agSum agent
 ```
@@ -154,7 +155,7 @@ flowchart TB
 
 `/up:make` is documented as an 11-step orchestrator, but at runtime each skill's **Terminal state** section names the next skill to invoke. The chain self-propagates from `udesign` onward — `/up:make` only needs to (a) start the chain at `udesign`, (b) branch/worktree decision via `git-worktrees`, and (c) docs-refresh via `udocument` after `Status=done`. The intermediate hops are emergent, not orchestrated.
 
-## File inventory (all 23)
+## File inventory (all 25)
 
 ### Commands — `plugins/up/commands/`
 
@@ -183,6 +184,7 @@ flowchart TB
 ### Standalone skills — `plugins/up/skills/`
 
 - `ubrainstorm/SKILL.md` — opinionated guided brainstorming for the hardest open-ended designs; standalone challenger to `udesign`, no edges into or out of the `/up:make` chain by design
+- `uplan-freeform/SKILL.md` — lightweight planner producing a plain-markdown plan one altitude above code (files/symbols/behaviors/phase order, no line numbers); standalone challenger to `uplan`, no edges into or out of the `/up:make` chain by design
 
 ### Shared shards — `plugins/up/skills/`
 
@@ -212,6 +214,7 @@ Removing any of these **does not affect** `/up:make` end-to-end. They are indepe
 - `commands/try.md` — manual positive/negative smoke test. `uverify` references it only as a *verification style*, never invokes it; deleting the command breaks no edge.
 - `skills/udebug/SKILL.md` — root-cause investigation. Cited once in `_principles.md` as the "anti-whack-a-mole" family, but no skill or command invokes it. Used directly when a bug surfaces; not part of the chain.
 - `skills/ubrainstorm/SKILL.md` — standalone challenger to `udesign` for open-ended design work. Detached from the chain *by design*, not by accident — the whole point is to skip `udesign`'s spec-format orchestration when the user doesn't yet know the shape of the answer.
+- `skills/uplan-freeform/SKILL.md` — standalone challenger to `uplan` for cases where the formal scaffolding (PH/RK/IF graph, IV/PC/AS/UK spec coverage, hands-off integration) would weigh more than the task warrants. Detached from the chain *by design* — produces a plain-markdown plan one altitude above code and stops there, leaving execution to whatever picks the file up next.
 
 ### Tier 2 — conditional escalation only (chain works without them, gracefully degraded)
 

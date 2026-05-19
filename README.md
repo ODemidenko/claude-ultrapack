@@ -89,6 +89,7 @@ Discipline skills:
 
 Standalone (outside `/up:make`):
 - `up:ubrainstorm` — Opinionated guided brainstorming for the hardest, least-shaped designs. A challenger to `up:udesign` for cases where the user doesn't yet know the right shape of the answer: drops the IV/PC/AS/UK spec format in favor of relentless interrogation, recommend-before-asking, depth-first tree walking, and YAGNI pruning. Ends with a written brief on disk (decisions on top, ADR-style reasoning below). Invoked directly — never from the `/up:make` chain.
+- `up:uplan-freeform` — Lightweight planner: turn a request (or a `ubrainstorm` brief) into a written implementation plan. A challenger to `up:uplan` for cases where the IV/PC/AS/UK and PH/RK/IF spec scaffolding would weigh more than the task warrants: drops the format ceremony in favor of files + symbols + behaviors + phase order, one altitude above code (no line numbers, no function bodies). Writes the plan to disk; the exact markdown shape is the model's call. Invoked directly — never from the `/up:make` chain.
 
 ### Commands
 

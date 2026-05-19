@@ -14,7 +14,7 @@ flowchart TB
     cmdReflect["/up:reflect<br/><sub>commands/reflect.md</sub>"]
     cmdStepBack["/up:step-back<br/><sub>commands/step-back.md</sub>"]
     cmdSummary["/up:summary<br/><sub>commands/summary.md</sub>"]
-    cmdTry["/up:try<br/><sub>commands/try.mpd</sub>"]
+    cmdTry["/up:try<br/><sub>commands/try.md</sub>"]
   end
 
   %% ================ MAIN WORKFLOW SKILLS ================
@@ -42,6 +42,13 @@ flowchart TB
     sHandsoff["handsoff<br/><sub>skills/handsoff/SKILL.md</sub>"]
     sDebug["udebug<br/><sub>skills/udebug/SKILL.md</sub>"]
     sTDD["test-driven-development<br/><sub>skills/test-driven-development/SKILL.md</sub>"]
+  end
+
+  %% ================ STANDALONE SKILLS ================
+  subgraph STAND ["Standalone - invoked directly, never from /up:make (no edges by design)"]
+    direction LR
+    sBrainstorm["ubrainstorm<br/><sub>skills/ubrainstorm/SKILL.md</sub>"]
+    sPlanFree["uplan-freeform<br/><sub>skills/uplan-freeform/SKILL.md</sub>"]
   end
 
   %% ================ SHARDS ================
@@ -115,6 +122,6 @@ flowchart TB
 
   %% ================ APPLY STYLES ================
   class cmdMake,cmdReflect,cmdStepBack,cmdSummary,cmdTry command
-  class sDesign,sWT,sPlan,sExec,sVerify,sReview,sDoc,sHandsoff,sDebug,sTDD skill
+  class sDesign,sWT,sPlan,sExec,sVerify,sReview,sDoc,sHandsoff,sDebug,sTDD,sBrainstorm,sPlanFree skill
   class shBrev,shPrin shard
   class agImpl,agImplS,agExpl,agRsrch,agRev,agSum agent

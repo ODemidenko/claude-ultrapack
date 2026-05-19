@@ -17,9 +17,11 @@ Upon major interdependencies updates (resulting in how skills interact), after `
 
 ## Naming
 
-Internal plugin name: `up`. Slash/skill invocations use the `up:` prefix: `/up:make`, `up:udesign`, `up:reviewer`. Process skills are `u`-prefixed (`udesign`, `ubrainstorm`, `uplan`, `uexecute`, `uverify`, `ureview`, `udebug`, `udocument`) to dodge collisions with Claude Code built-ins.
+Internal plugin name: `up`. Slash/skill invocations use the `up:` prefix: `/up:make`, `up:udesign`, `up:reviewer`. Process skills are `u`-prefixed (`udesign`, `ubrainstorm`, `uplan`, `uplan-freeform`, `uexecute`, `uverify`, `ureview`, `udebug`, `udocument`) to dodge collisions with Claude Code built-ins.
 
 `ubrainstorm` is a standalone challenger to `udesign` for hard, open-ended design tasks where the user doesn't yet know the right shape of the answer — invoked directly by the user, never from the `/up:make` chain. It deliberately drops the formal IV/PC/AS/UK spec format to keep the model's attention on the design itself rather than on format compliance.
+
+`uplan-freeform` is the parallel challenger to `uplan` — invoked directly, never from the `/up:make` chain. It deliberately drops the PH/RK/IF interface graph and IV/PC/AS/UK spec-coverage scaffolding in favor of a plain-markdown plan one altitude above code (files, symbols, behaviors, phase order — no line numbers, no function bodies). Use it when the formal scaffolding would weigh more than the task warrants, or downstream of a `ubrainstorm` brief that needs only a written plan rather than the full `/up:make` chain.
 
 ## Design principles
 
