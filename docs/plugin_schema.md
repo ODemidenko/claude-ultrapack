@@ -2,7 +2,7 @@
 
 Visual map of every `.md` file under `plugins/up/` and how they reference each other. Use this when chasing where a `_brevity.md` rule, an invariant ID, or a hand-off between skills actually lives.
 
-The diagram covers all **23** loadable artifacts: 5 commands, 10 skills, 2 shared shards, 6 agents.
+The diagram covers all **24** loadable artifacts: 5 commands, 11 skills, 2 shared shards, 6 agents.
 
 ## Diagram
 
@@ -51,6 +51,12 @@ flowchart TB
     sHandsoff["handsoff<br/><sub>skills/handsoff/SKILL.md</sub>"]
     sDebug["udebug<br/><sub>skills/udebug/SKILL.md</sub>"]
     sTDD["test-driven-development<br/><sub>skills/test-driven-development/SKILL.md</sub>"]
+  end
+
+  %% ================ STANDALONE SKILLS ================
+  subgraph STAND ["Standalone - invoked directly, never from /up:make (no edges by design)"]
+    direction LR
+    sBrainstorm["ubrainstorm<br/><sub>skills/ubrainstorm/SKILL.md</sub>"]
   end
 
   %% ================ SHARDS ================
@@ -124,7 +130,7 @@ flowchart TB
 
   %% ================ APPLY STYLES ================
   class cmdMake,cmdReflect,cmdStepBack,cmdSummary,cmdTry command
-  class sDesign,sWT,sPlan,sExec,sVerify,sReview,sDoc,sHandsoff,sDebug,sTDD skill
+  class sDesign,sWT,sPlan,sExec,sVerify,sReview,sDoc,sHandsoff,sDebug,sTDD,sBrainstorm skill
   class shBrev,shPrin shard
   class agImpl,agImplS,agExpl,agRsrch,agRev,agSum agent
 ```
@@ -174,6 +180,10 @@ flowchart TB
 - `udebug/SKILL.md` — root-cause investigation (4 phases, no symptom patches)
 - `test-driven-development/SKILL.md` — RED-GREEN-REFACTOR + applicability gate
 
+### Standalone skills — `plugins/up/skills/`
+
+- `ubrainstorm/SKILL.md` — opinionated guided brainstorming for the hardest open-ended designs; standalone challenger to `udesign`, no edges into or out of the `/up:make` chain by design
+
 ### Shared shards — `plugins/up/skills/`
 
 - `_brevity.md` — five-principle terseness rules; included by every writing stage
@@ -201,6 +211,7 @@ Removing any of these **does not affect** `/up:make` end-to-end. They are indepe
 - `commands/summary.md` + `agents/summarizer.md` — handoff-summary pair. Drops as a unit; nothing in the chain calls either.
 - `commands/try.md` — manual positive/negative smoke test. `uverify` references it only as a *verification style*, never invokes it; deleting the command breaks no edge.
 - `skills/udebug/SKILL.md` — root-cause investigation. Cited once in `_principles.md` as the "anti-whack-a-mole" family, but no skill or command invokes it. Used directly when a bug surfaces; not part of the chain.
+- `skills/ubrainstorm/SKILL.md` — standalone challenger to `udesign` for open-ended design work. Detached from the chain *by design*, not by accident — the whole point is to skip `udesign`'s spec-format orchestration when the user doesn't yet know the shape of the answer.
 
 ### Tier 2 — conditional escalation only (chain works without them, gracefully degraded)
 

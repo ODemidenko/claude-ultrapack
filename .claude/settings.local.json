@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git show *)",
+      "Bash(git grep *)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(mkdir -p ~/.local/share/claude-tools/mermaid-validator)",
+      "Read(//home/oleg/.local/share/claude-tools/**)",
+      "Bash(bun init *)",
+      "Bash(bun add *)",
+      "Bash(mkdir -p ~/.local/bin)",
+      "Bash(cat)",
+      "Bash(chmod +x ~/.local/bin/mermaid-validate)",
+      "Bash(~/.local/bin/mermaid-validate ~/src/claude-ultrapack/docs/plugin_schema.mmd)"
+    ]
+  }
+}

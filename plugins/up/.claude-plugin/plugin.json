@@ -1,6 +1,6 @@
 {
   "name": "up",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "ultrapack — lean, opinionated Claude Code skill pack for spec-driven, git-centered development, forked from https://github.com/btseytlin/ultrapack",
   "author": {
     "name": "Oleg Demidenko",

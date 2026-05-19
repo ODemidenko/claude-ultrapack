@@ -13,11 +13,13 @@ Claude Code plugin for spec-driven, git-centered development. Distributed as a G
 Everything under `plugins/up/` loads into Claude Code. Everything outside (`docs/`, README, CLAUDE.md) is repo-only.
 
 Internal plugin structure and skills+agents inter-dependencies is described in the file: docs/plugin_schema.md.
-Upon any major project update (resulting in how skills interact), after `uexecute` finishes: propose updating this file.
+Upon major interdependencies updates (resulting in how skills interact), after `uexecute` finishes: propose updating this file.
 
 ## Naming
 
-Internal plugin name: `up`. Slash/skill invocations use the `up:` prefix: `/up:make`, `up:udesign`, `up:reviewer`. Process skills are `u`-prefixed (`udesign`, `uplan`, `uexecute`, `uverify`, `ureview`, `udebug`, `udocument`) to dodge collisions with Claude Code built-ins.
+Internal plugin name: `up`. Slash/skill invocations use the `up:` prefix: `/up:make`, `up:udesign`, `up:reviewer`. Process skills are `u`-prefixed (`udesign`, `ubrainstorm`, `uplan`, `uexecute`, `uverify`, `ureview`, `udebug`, `udocument`) to dodge collisions with Claude Code built-ins.
+
+`ubrainstorm` is a standalone challenger to `udesign` for hard, open-ended design tasks where the user doesn't yet know the right shape of the answer — invoked directly by the user, never from the `/up:make` chain. It deliberately drops the formal IV/PC/AS/UK spec format to keep the model's attention on the design itself rather than on format compliance.
 
 ## Design principles
 

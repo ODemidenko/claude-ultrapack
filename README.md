@@ -87,6 +87,9 @@ Discipline skills:
 - `up:git-worktrees` — guidance for using git worktrees.
 - `up:handsoff` — Shared contract for hands-off mode (activated via `/up:make handsoff <description>`): safety principles, decision log, no-default rule, end-of-task summary. Referenced by `/up:make` and every process skill.
 
+Standalone (outside `/up:make`):
+- `up:ubrainstorm` — Opinionated guided brainstorming for the hardest, least-shaped designs. A challenger to `up:udesign` for cases where the user doesn't yet know the right shape of the answer: drops the IV/PC/AS/UK spec format in favor of relentless interrogation, recommend-before-asking, depth-first tree walking, and YAGNI pruning. Ends with a written brief on disk (decisions on top, ADR-style reasoning below). Invoked directly — never from the `/up:make` chain.
+
 ### Commands
 
 - `/up:make [handsoff] <description>` — Orchestrate the full flow: task file → design → branch → plan → execute → verify → review → update docs.
